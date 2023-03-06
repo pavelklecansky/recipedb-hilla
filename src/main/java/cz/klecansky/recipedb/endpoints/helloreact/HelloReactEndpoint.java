@@ -1,4 +1,4 @@
-package com.example.application.endpoints.helloreact;
+package cz.klecansky.recipedb.endpoints.helloreact;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.hilla.Endpoint;

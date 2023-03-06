@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: recipedb
+      POSTGRES_USER: recipedb
+      POSTGRES_PASSWORD: food
+    ports:
+      - 5432:5432
