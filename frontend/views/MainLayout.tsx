@@ -7,6 +7,7 @@ import { MenuProps, routes, useViewMatches, ViewRouteObject } from 'Frontend/rou
 import { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import css from './MainLayout.module.css';
+import "../styles.css";
 
 type MenuRoute = ViewRouteObject &
   Readonly<{
