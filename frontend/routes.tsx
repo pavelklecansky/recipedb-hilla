@@ -1,13 +1,18 @@
-import HelloReactView from 'Frontend/views/helloreact/HelloReactView.js';
 import MainLayout from 'Frontend/views/MainLayout.js';
-import {createBrowserRouter, IndexRouteObject, NonIndexRouteObject, useMatches} from 'react-router-dom';
+import {
+    createBrowserRouter,
+    IndexRouteObject,
+    NonIndexRouteObject, redirect,
+    RouteObject,
+    useMatches
+} from 'react-router-dom';
 import RecipesView from './views/recipe/RecipesView';
 import RecipeView from "Frontend/views/recipe/RecipeView";
 import React from "react";
 import NotFoundView from "Frontend/views/helper/NotFoundView";
-import AddRecipeDialog from "Frontend/components/dialog/AddRecipeDialog";
 import AddRecipeView from "Frontend/views/recipe/AddRecipeView";
 import EditRecipeView from "Frontend/views/recipe/EditRecipeView";
+import IndexToRecipesRedirect from "Frontend/views/helper/IndexToRecipesRedirect";
 
 export type MenuProps = Readonly<{
     icon?: string;
@@ -32,14 +37,13 @@ type RouteMatch = ReturnType<typeof useMatches> extends (infer T)[] ? T : never;
 export type ViewRouteMatch = Readonly<Override<RouteMatch, ViewMeta>>;
 
 export const useViewMatches = useMatches as () => readonly ViewRouteMatch[];
-
-export const routes: readonly ViewRouteObject[] = [
+export const routes: readonly RouteObject[] = [
     {
         element: <MainLayout/>,
         handle: {icon: 'null', title: 'Main'},
         errorElement: <NotFoundView/>,
         children: [
-            {path: '/', element: <HelloReactView/>, handle: {icon: 'la la-globe', title: 'Hello React'}},
+            {path: '/', element: <IndexToRecipesRedirect />, handle: {title: 'Recipes'}},
             {path: '/recipe', element: <RecipesView/>, handle: {icon: 'la la-book', title: 'Recipes'}},
             {path: '/recipe/:id', element: <RecipeView/>, handle: {title: 'Recipe'}},
             {path: '/recipe/add', element: <AddRecipeView/>, handle: {title: 'Add new recipe'}},
