@@ -9,9 +9,12 @@ import {TextField} from "@hilla/react-components/TextField.js";
 import {Button} from "@hilla/react-components/Button.js";
 import {NumberField} from "@hilla/react-components/NumberField.js";
 import {TextArea} from "@hilla/react-components/TextArea.js";
+import {Upload} from "@hilla/react-components/Upload.js";
+import {readAsDataURL} from 'promise-file-reader';
+import CreateRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/CreateRecipe";
 
 export default function AddRecipeView() {
-    const empty: RecipeEntity = {
+    const empty: CreateRecipe = {
         name: "",
         description: "",
         directions: "",
@@ -19,13 +22,15 @@ export default function AddRecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
+        imageBase64: "",
     };
     const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: empty,
-        onSubmit: async (value: RecipeEntity, {setSubmitting, setErrors}) => {
+        onSubmit: async (value: CreateRecipe, {setSubmitting, setErrors}) => {
             try {
+
                 const saved = await RecipeEndpoint.saveRecipe(value) ?? value;
                 formik.resetForm();
                 Notification.show("Recipe add successfully", {theme: "success"})
@@ -67,6 +72,18 @@ export default function AddRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
+                <p>Upload recipe image</p>
+                <Upload className={"w-full"}
+                        accept="image/*"
+                        max-files="1"
+                        onUploadBefore={async e => {
+                            const file = e.detail.file;
+                            e.preventDefault();
+                            const base64Image = await readAsDataURL(file);
+                            console.log(base64Image);
+                            formik.values.imageBase64 = base64Image;
+                        }}
+                    />
                 <NumberField
                     className={"w-full md:w-1/4"}
                     name='cookTimeInMinutes'

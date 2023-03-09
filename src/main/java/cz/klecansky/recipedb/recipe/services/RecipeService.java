@@ -1,5 +1,6 @@
 package cz.klecansky.recipedb.recipe.services;
 
+import cz.klecansky.recipedb.recipe.endpoints.request.CreateRecipe;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import cz.klecansky.recipedb.recipe.io.RecipeRepository;
 import lombok.AccessLevel;
@@ -29,8 +30,22 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
 
-    public RecipeEntity save(RecipeEntity recipe) {
-        return recipeRepository.save(recipe);
+    public RecipeEntity save(CreateRecipe recipe) {
+        RecipeEntity recipeEntity = createRecipeToRecipeEntity(recipe);
+        return recipeRepository.save(recipeEntity);
+    }
+
+    private RecipeEntity createRecipeToRecipeEntity(CreateRecipe recipe) {
+        RecipeEntity recipeEntity = new RecipeEntity();
+        recipeEntity.setName(recipe.getName());
+        recipeEntity.setDescription(recipe.getDescription());
+        recipeEntity.setDirections(recipe.getDescription());
+        recipeEntity.setIngredients(recipe.getIngredients());
+        recipeEntity.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
+        recipeEntity.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
+        recipeEntity.setServings(recipe.getServings());
+        recipeEntity.setImageBase64(recipe.getImageBase64());
+        return recipeEntity;
     }
 
     public void deleteById(UUID id) {
@@ -47,6 +62,7 @@ public class RecipeService {
                     oldRecipe.setServings(recipe.getServings());
                     oldRecipe.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
                     oldRecipe.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
+                    oldRecipe.setImageBase64(recipe.getImageBase64());
                     return recipeRepository.save(oldRecipe);
                 });
     }

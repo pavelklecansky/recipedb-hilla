@@ -9,6 +9,8 @@ import {TextField} from "@hilla/react-components/TextField.js";
 import {Button} from "@hilla/react-components/Button.js";
 import {NumberField} from "@hilla/react-components/NumberField.js";
 import {TextArea} from "@hilla/react-components/TextArea.js";
+import {Upload} from "@hilla/react-components/Upload.js";
+import {readAsDataURL} from "promise-file-reader";
 
 export default function EditRecipeView() {
     const empty: RecipeEntity = {
@@ -85,6 +87,26 @@ export default function EditRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
+                <div className={"w-full flex align-middle"}>
+
+                    <div className={"w-2/5"}>
+                        <p>Upload recipe image</p>
+                        <Upload accept="image/*"
+                                max-files="1"
+                                onUploadBefore={async e => {
+                                    const file = e.detail.file;
+                                    e.preventDefault();
+                                    const base64Image = await readAsDataURL(file);
+                                    console.log(base64Image);
+                                    formik.values.imageBase64 = base64Image;
+                                }}
+                        />
+                    </div>
+                    <div className={"w-1/2"}>
+                        <img className="h-48 lg:h-48 md:h-36 w-full object-scale-down object-center"
+                             src={recipe.imageBase64} alt="Recipe image"/>
+                    </div>
+                </div>
                 <NumberField
                     className={"w-full md:w-1/4"}
                     name='cookTimeInMinutes'

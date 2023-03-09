@@ -1,6 +1,7 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import cz.klecansky.recipedb.recipe.endpoints.request.CreateRecipe;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import cz.klecansky.recipedb.recipe.services.RecipeService;
 import dev.hilla.Endpoint;
@@ -30,7 +31,7 @@ public class RecipeEndpoint {
         return recipeService.findById(id).orElseThrow();
     }
 
-    public RecipeEntity saveRecipe(RecipeEntity recipe) {
+    public RecipeEntity saveRecipe(CreateRecipe recipe) {
         return recipeService.save(recipe);
     }
 

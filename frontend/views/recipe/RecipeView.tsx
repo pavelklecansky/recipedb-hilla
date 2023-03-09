@@ -11,17 +11,20 @@ import {ConfirmDialog} from "@hilla/react-components/ConfirmDialog.js";
 export default function RecipeView() {
     const [recipe, setRecipe] = useState<RecipeEntity>({});
     const [opened, setOpened] = useState(false);
+    const [imgUrl, setImageUrl] = useState("https://dummyimage.com/720x400");
     let {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (id != null) {
-            RecipeEndpoint.findById(id).then((recipe) => setRecipe(recipe))
-                .catch(reason => {
-                    console.log(reason);
-                    Notification.show(reason, {theme: "error"});
-                    navigate("/recipe");
-                });
+            RecipeEndpoint.findById(id).then((recipe) => {
+                setRecipe(recipe);
+                setImageUrl(recipe.imageBase64 || "https://dummyimage.com/720x400");
+            }).catch(reason => {
+                console.log(reason);
+                Notification.show(reason, {theme: "error"});
+                navigate("/recipe");
+            });
         }
     }, []);
 
@@ -87,8 +90,8 @@ export default function RecipeView() {
                     </div>
                 </div>
                 <div className="lg:max-w-md lg:w-2/3 md:w-1/2 w-5/6 mt-2">
-                    <img className="object-cover object-center rounded" alt="hero"
-                         src="https://dummyimage.com/720x600"/>
+                    <img className="object-cover object-center rounded" alt="Recipe image"
+                         src={imgUrl}/>
                 </div>
             </div>
             <div>

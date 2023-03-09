@@ -34,6 +34,7 @@
     "formik": "^2.2.9",
     "line-awesome": "1.3.0",
     "lit": "2.6.1",
+    "promise-file-reader": "^1.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2"
@@ -68,6 +69,7 @@
     "react-dom": "$react-dom",
     "react-router-dom": "$react-router-dom",
     "formik": "$formik",
+    "@szhsin/react-menu": "$@szhsin/react-menu",
     "@vaadin/bundles": "$@vaadin/bundles",
     "@hilla/react-components": "$@hilla/react-components",
     "@vaadin/common-frontend": "$@vaadin/common-frontend",
@@ -95,7 +97,7 @@
     "@hilla/generator-typescript-plugin-backbone": "$@hilla/generator-typescript-plugin-backbone",
     "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
     "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
-    "@szhsin/react-menu": "$@szhsin/react-menu"
+    "promise-file-reader": "$promise-file-reader"
   },
   "vaadin": {
     "dependencies": {
@@ -143,6 +145,6 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "78bbf726c6834284540b77c1a69e36d3038da38b9a44da63d9e88beda76b817d"
+    "hash": "58be28bd8d89da02a3b9490ef41b981fbc6f7fb6b6498171f6445c6b9b91f550"
   }
 }
