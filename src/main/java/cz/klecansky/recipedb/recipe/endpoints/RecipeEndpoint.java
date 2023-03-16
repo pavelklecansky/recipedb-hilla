@@ -12,14 +12,14 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.UUID;
 
 @Endpoint
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@AnonymousAllowed
-@RequestMapping("/recipe")
+@PermitAll
 public class RecipeEndpoint {
 
     @NonNull RecipeService recipeService;

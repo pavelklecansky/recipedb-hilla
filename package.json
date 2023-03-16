@@ -71,6 +71,8 @@
     "react-router-dom": "$react-router-dom",
     "formik": "$formik",
     "@szhsin/react-menu": "$@szhsin/react-menu",
+    "promise-file-reader": "$promise-file-reader",
+    "react-select": "$react-select",
     "@vaadin/bundles": "$@vaadin/bundles",
     "@hilla/react-components": "$@hilla/react-components",
     "@vaadin/common-frontend": "$@vaadin/common-frontend",
@@ -97,9 +99,7 @@
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
     "@hilla/generator-typescript-plugin-backbone": "$@hilla/generator-typescript-plugin-backbone",
     "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
-    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
-    "promise-file-reader": "$promise-file-reader",
-    "react-select": "$react-select"
+    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli"
   },
   "vaadin": {
     "dependencies": {
