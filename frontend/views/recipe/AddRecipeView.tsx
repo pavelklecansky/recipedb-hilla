@@ -11,10 +11,11 @@ import {NumberField} from "@hilla/react-components/NumberField.js";
 import {TextArea} from "@hilla/react-components/TextArea.js";
 import {Upload} from "@hilla/react-components/Upload.js";
 import {readAsDataURL} from 'promise-file-reader';
-import CreateRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/CreateRecipe";
+import TagSelect from "Frontend/components/input/TagSelect";
+import SaveRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/SaveRecipe";
 
 export default function AddRecipeView() {
-    const empty: CreateRecipe = {
+    const empty: SaveRecipe = {
         name: "",
         description: "",
         directions: "",
@@ -22,15 +23,16 @@ export default function AddRecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
-        imageBase64: "",
+        imageBase64: [],
+        tags: [],
     };
     const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: empty,
-        onSubmit: async (value: CreateRecipe, {setSubmitting, setErrors}) => {
+        onSubmit: async (value: SaveRecipe, {setSubmitting, setErrors}) => {
             try {
-
+                console.log(value);
                 const saved = await RecipeEndpoint.saveRecipe(value) ?? value;
                 formik.resetForm();
                 Notification.show("Recipe add successfully", {theme: "success"})
@@ -79,11 +81,10 @@ export default function AddRecipeView() {
                         onUploadBefore={async e => {
                             const file = e.detail.file;
                             e.preventDefault();
-                            const base64Image = await readAsDataURL(file);
-                            console.log(base64Image);
-                            formik.values.imageBase64 = base64Image;
+                            const base64Image = await file.arrayBuffer();
+                            formik.values.imageBase64 = [...new Uint8Array(base64Image)];
                         }}
-                    />
+                />
                 <NumberField
                     className={"w-full md:w-1/4"}
                     name='cookTimeInMinutes'
@@ -121,7 +122,14 @@ export default function AddRecipeView() {
                     name='directions'
                     label="Directions"
                     value={formik.values.directions}
-                    onChange={formik.handleChange}
+                    onChange={(formik.handleChange)}
+                    onBlur={formik.handleChange}
+                />
+                <TagSelect
+                    className={"w-full"}
+                    name='tags'
+                    value={formik.values.tags}
+                    onChange={values => formik.setFieldValue("tags", values)}
                     onBlur={formik.handleChange}
                 />
                 <Button

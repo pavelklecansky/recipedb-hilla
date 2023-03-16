@@ -1,15 +1,29 @@
 import {RecipeEndpoint} from 'Frontend/generated/endpoints';
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import RecipeEntity from "Frontend/generated/cz/klecansky/recipedb/recipe/io/RecipeEntity";
 import {Notification} from '@hilla/react-components/Notification.js';
 import {Menu, MenuItem} from "@szhsin/react-menu";
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import {ConfirmDialog} from "@hilla/react-components/ConfirmDialog.js";
+import RecipeWithImageResponse
+    from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 
 export default function RecipeView() {
-    const [recipe, setRecipe] = useState<RecipeEntity>({});
+    const empty: RecipeWithImageResponse = {
+        id: "",
+        name: "",
+        description: "",
+        directions: "",
+        ingredients: "",
+        servings: 0,
+        cookTimeInMinutes: 0,
+        prepTimeInMinutes: 0,
+        imageBase64: "",
+        tags: [],
+    }
+
+    const [recipe, setRecipe] = useState<RecipeWithImageResponse>(empty);
     const [opened, setOpened] = useState(false);
     const [imgUrl, setImageUrl] = useState("https://dummyimage.com/720x400");
     let {id} = useParams();
@@ -67,6 +81,12 @@ export default function RecipeView() {
                     <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 mt-0">
                         {recipe.name}
                     </h1>
+                    {recipe.tags.length > 0 &&
+                        <div className={"rounded-lg bg-gray-100 p-2"}>
+                            {recipe.tags.map(value => (<a key={value.id} href={`/tag/${value.id}`} className={"text-lg mr-3"}><i
+                                className="text-black la la-tag"></i> {value.name}</a>))}
+                        </div>
+                    }
                     <p className="mb-8 leading-relaxed">{recipe.description}</p>
                     <div className="p-4 w-full">
                         <div className="flex rounded-lg bg-gray-100 p-4 flex-col xl:flex-row flex-wrap">
@@ -94,20 +114,21 @@ export default function RecipeView() {
                          src={imgUrl}/>
                 </div>
             </div>
-            <div>
+            <div className="container mx-auto flex md:flex-row flex-col items-center">
                 <div>
-                    <h2>Ingredients</h2>
-                    <span>
+                    <div>
+                        <h2>Ingredients</h2>
+                        <span>
                         {recipe.ingredients}
                     </span>
-                </div>
-                <div>
-                    <h2>Directions</h2>
-                    <span>
+                    </div>
+                    <div>
+                        <h2>Directions</h2>
+                        <span>
                         {recipe.directions}
                     </span>
+                    </div>
                 </div>
-
             </div>
         </div>
     );

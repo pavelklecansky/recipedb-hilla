@@ -1,15 +1,25 @@
 package cz.klecansky.recipedb.recipe.services;
 
-import cz.klecansky.recipedb.recipe.endpoints.request.CreateRecipe;
+import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
+import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import cz.klecansky.recipedb.recipe.io.RecipeRepository;
+import cz.klecansky.recipedb.tag.endpoints.request.BasicTagRequest;
+import cz.klecansky.recipedb.tag.io.TagEntity;
+import cz.klecansky.recipedb.tag.io.TagEntityRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,21 +31,47 @@ import java.util.UUID;
 public class RecipeService {
 
     @NonNull RecipeRepository recipeRepository;
+    @NonNull TagEntityRepository tagEntityRepository;
 
-    public List<RecipeEntity> findAll() {
-        return recipeRepository.findAll();
+    @Transactional
+    public List<RecipeWithImageResponse> findAll() {
+        return recipeRepository.findAll().stream().map(this::convertRecipeEntityToRecipeWithImageResponse).toList();
     }
 
-    public Optional<RecipeEntity> findById(UUID id) {
-        return recipeRepository.findById(id);
+    @Transactional
+    public List<RecipeWithImageResponse> findAllByTagsId(UUID tag) {
+        return recipeRepository.findAllByTagsId(tag).stream().map(this::convertRecipeEntityToRecipeWithImageResponse).toList();
     }
 
-    public RecipeEntity save(CreateRecipe recipe) {
+    private RecipeWithImageResponse convertRecipeEntityToRecipeWithImageResponse(RecipeEntity recipe) {
+        String base64EncodedImageBytes = "";
+        if (recipe.getImage() != null) {
+            byte[] image = recipe.getImage();
+            try (InputStream is = new BufferedInputStream(new ByteArrayInputStream(recipe.getImage()))) {
+                String mimeType = URLConnection.guessContentTypeFromStream(is);
+                if (mimeType != null) {
+                    base64EncodedImageBytes = "data:" + mimeType + ";base64," + Base64.getEncoder().encodeToString(image);
+                }
+            } catch (IOException e) {
+            }
+        }
+
+        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getIngredients(), recipe.getDirections(), base64EncodedImageBytes, recipe.getTags());
+    }
+
+    @Transactional
+    public Optional<RecipeWithImageResponse> findById(UUID id) {
+        return recipeRepository.findById(id).map(this::convertRecipeEntityToRecipeWithImageResponse);
+    }
+
+    @Transactional
+    public RecipeWithImageResponse save(SaveRecipe recipe) {
         RecipeEntity recipeEntity = createRecipeToRecipeEntity(recipe);
-        return recipeRepository.save(recipeEntity);
+        RecipeEntity save = recipeRepository.save(recipeEntity);
+        return convertRecipeEntityToRecipeWithImageResponse(save);
     }
 
-    private RecipeEntity createRecipeToRecipeEntity(CreateRecipe recipe) {
+    private RecipeEntity createRecipeToRecipeEntity(SaveRecipe recipe) {
         RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setName(recipe.getName());
         recipeEntity.setDescription(recipe.getDescription());
@@ -44,7 +80,11 @@ public class RecipeService {
         recipeEntity.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
         recipeEntity.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
         recipeEntity.setServings(recipe.getServings());
-        recipeEntity.setImageBase64(recipe.getImageBase64());
+        recipeEntity.setImage(recipe.getImageBase64());
+        for (BasicTagRequest tag : recipe.getTags()) {
+            Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
+            tagById.ifPresent(tagEntity -> recipeEntity.getTags().add(tagEntity));
+        }
         return recipeEntity;
     }
 
@@ -52,7 +92,7 @@ public class RecipeService {
         recipeRepository.deleteById(id);
     }
 
-    public Optional<RecipeEntity> update(UUID id, RecipeEntity recipe) {
+    public Optional<RecipeWithImageResponse> update(UUID id, SaveRecipe recipe) {
         return recipeRepository.findById(id)
                 .map(oldRecipe -> {
                     oldRecipe.setName(recipe.getName());
@@ -62,8 +102,15 @@ public class RecipeService {
                     oldRecipe.setServings(recipe.getServings());
                     oldRecipe.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
                     oldRecipe.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
-                    oldRecipe.setImageBase64(recipe.getImageBase64());
+                    if (recipe.getImageBase64().length != 0) {
+                        oldRecipe.setImage(recipe.getImageBase64());
+                    }
+                    oldRecipe.getTags().clear();
+                    for (BasicTagRequest tag : recipe.getTags()) {
+                        Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
+                        tagById.ifPresent(tagEntity -> oldRecipe.getTags().add(tagEntity));
+                    }
                     return recipeRepository.save(oldRecipe);
-                });
+                }).map(this::convertRecipeEntityToRecipeWithImageResponse);
     }
 }

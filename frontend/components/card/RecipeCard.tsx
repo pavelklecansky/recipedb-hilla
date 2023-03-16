@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import RecipeEntity from "Frontend/generated/cz/klecansky/recipedb/recipe/io/RecipeEntity";
+import RecipeWithImageResponse
+    from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 
 type RecipeCardProps = {
-    recipe: RecipeEntity
+    recipe: RecipeWithImageResponse
 };
 export default function RecipeCard({recipe}: RecipeCardProps) {
 
     let imageSrc = recipe.imageBase64 || "https://dummyimage.com/720x400";
     return (
-        <div className="p-4 sm:w-1/3">
+        <div className="p-4">
             <div
                 className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                 <a href={"/recipe/" + recipe.id}><img className="h-48 lg:h-48 md:h-36 w-full object-cover object-center"

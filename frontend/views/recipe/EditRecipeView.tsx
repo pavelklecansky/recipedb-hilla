@@ -11,9 +11,13 @@ import {NumberField} from "@hilla/react-components/NumberField.js";
 import {TextArea} from "@hilla/react-components/TextArea.js";
 import {Upload} from "@hilla/react-components/Upload.js";
 import {readAsDataURL} from "promise-file-reader";
+import SaveRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/SaveRecipe";
+import RecipeWithImageResponse
+    from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
+import TagSelect from "Frontend/components/input/TagSelect";
 
 export default function EditRecipeView() {
-    const empty: RecipeEntity = {
+    const empty: SaveRecipe = {
         name: "",
         description: "",
         directions: "",
@@ -21,15 +25,34 @@ export default function EditRecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
+        imageBase64: [],
+        tags: [],
     }
 
-    const [recipe, setRecipe] = useState<RecipeEntity>({});
+    const [recipe, setRecipe] = useState<SaveRecipe>(empty);
+    const [image, setImage] = useState<string>("");
+    const [loaded, setLoaded] = useState<boolean>(false);
     let {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (id != null) {
-            RecipeEndpoint.findById(id).then((recipe) => setRecipe(recipe))
+            RecipeEndpoint.findById(id).then((recipe) => {
+                setImage(recipe.imageBase64);
+
+                setRecipe({
+                    name: recipe.name,
+                    cookTimeInMinutes: recipe.cookTimeInMinutes,
+                    description: recipe.description,
+                    directions: recipe.directions,
+                    ingredients: recipe.ingredients,
+                    servings: recipe.servings,
+                    prepTimeInMinutes: recipe.prepTimeInMinutes,
+                    tags: recipe.tags,
+                    imageBase64: []
+                })
+
+            }).then(value =>  setLoaded(true))
                 .catch(reason => {
                     console.log(reason);
                     Notification.show(reason, {theme: "error"});
@@ -43,7 +66,7 @@ export default function EditRecipeView() {
     const formik = useFormik({
         initialValues: getData(),
         enableReinitialize: true,
-        onSubmit: async (value: RecipeEntity, {setSubmitting, setErrors}) => {
+        onSubmit: async (value: SaveRecipe, {setSubmitting, setErrors}) => {
             try {
                 if (id != null) {
                     const saved = await RecipeEndpoint.update(id, value) ?? value;
@@ -96,15 +119,14 @@ export default function EditRecipeView() {
                                 onUploadBefore={async e => {
                                     const file = e.detail.file;
                                     e.preventDefault();
-                                    const base64Image = await readAsDataURL(file);
-                                    console.log(base64Image);
-                                    formik.values.imageBase64 = base64Image;
+                                    const base64Image = await file.arrayBuffer();
+                                    formik.values.imageBase64 = [...new Uint8Array(base64Image)];
                                 }}
                         />
                     </div>
                     <div className={"w-1/2"}>
                         <img className="h-48 lg:h-48 md:h-36 w-full object-scale-down object-center"
-                             src={recipe.imageBase64} alt="Recipe image"/>
+                             src={image} alt="Recipe image"/>
                     </div>
                 </div>
                 <NumberField
@@ -147,6 +169,14 @@ export default function EditRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
+                {loaded && formik.values.name != "" &&
+                    <TagSelect
+                        className={"w-full"}
+                        name='tags'
+                        value={formik.values.tags}
+                        onChange={values => formik.setFieldValue("tags", values)}
+                        onBlur={formik.handleChange}
+                    />}
                 <Button
                     className={"w-full"}
                     theme="primary"

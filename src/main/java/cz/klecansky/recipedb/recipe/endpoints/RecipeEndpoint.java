@@ -1,7 +1,8 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import cz.klecansky.recipedb.recipe.endpoints.request.CreateRecipe;
+import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
+import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import cz.klecansky.recipedb.recipe.services.RecipeService;
 import dev.hilla.Endpoint;
@@ -23,19 +24,23 @@ public class RecipeEndpoint {
 
     @NonNull RecipeService recipeService;
 
-    public List<RecipeEntity> findAll() {
+    public List<RecipeWithImageResponse> findAll() {
         return recipeService.findAll();
     }
 
-    public RecipeEntity findById(UUID id) {
+    public RecipeWithImageResponse findById(UUID id) {
         return recipeService.findById(id).orElseThrow();
     }
 
-    public RecipeEntity saveRecipe(CreateRecipe recipe) {
+    public List<RecipeWithImageResponse> findAllByTagId(UUID id) {
+        return recipeService.findAllByTagsId(id);
+    }
+
+    public RecipeWithImageResponse saveRecipe(SaveRecipe recipe) {
         return recipeService.save(recipe);
     }
 
-    public RecipeEntity update(UUID id, RecipeEntity recipe) {
+    public RecipeWithImageResponse update(UUID id, SaveRecipe recipe) {
         return recipeService.update(id, recipe).orElseThrow();
     }
 

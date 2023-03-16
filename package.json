@@ -37,7 +37,8 @@
     "promise-file-reader": "^1.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.2"
+    "react-router-dom": "^6.4.2",
+    "react-select": "^5.7.0"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "3.1.0",
@@ -97,7 +98,8 @@
     "@hilla/generator-typescript-plugin-backbone": "$@hilla/generator-typescript-plugin-backbone",
     "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
     "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
-    "promise-file-reader": "$promise-file-reader"
+    "promise-file-reader": "$promise-file-reader",
+    "react-select": "$react-select"
   },
   "vaadin": {
     "dependencies": {
@@ -145,6 +147,6 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "58be28bd8d89da02a3b9490ef41b981fbc6f7fb6b6498171f6445c6b9b91f550"
+    "hash": "7f73af95b6f4809b7b3fcf891db6fc4f81d329d2982725e61fc3c1c676980f78"
   }
 }
