@@ -2,6 +2,7 @@ package cz.klecansky.recipedb.recipe.io;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import cz.klecansky.recipedb.tag.io.TagEntity;
+import dev.hilla.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -28,6 +29,7 @@ public class RecipeEntity {
     private Integer servings;
     private String ingredients;
     private String directions;
+    Integer rating;
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
     @Basic(fetch = FetchType.LAZY)

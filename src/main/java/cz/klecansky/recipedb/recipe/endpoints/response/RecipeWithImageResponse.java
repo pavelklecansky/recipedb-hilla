@@ -5,8 +5,6 @@ import cz.klecansky.recipedb.tag.io.TagEntity;
 import dev.hilla.Nonnull;
 import lombok.Value;
 
-import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,6 +26,8 @@ public class RecipeWithImageResponse {
     String ingredients;
     @Nonnull
     String directions;
+    @Nonnull
+    Integer rating;
     @Nonnull
     String imageBase64;
     @Nonnull

@@ -56,7 +56,7 @@ public class RecipeService {
             }
         }
 
-        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getIngredients(), recipe.getDirections(), base64EncodedImageBytes, recipe.getTags());
+        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getIngredients(), recipe.getDirections(), recipe.getRating(), base64EncodedImageBytes, recipe.getTags());
     }
 
     @Transactional
@@ -81,6 +81,7 @@ public class RecipeService {
         recipeEntity.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
         recipeEntity.setServings(recipe.getServings());
         recipeEntity.setImage(recipe.getImageBase64());
+        recipeEntity.setRating(recipe.getRating());
         for (BasicTagRequest tag : recipe.getTags()) {
             Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
             tagById.ifPresent(tagEntity -> recipeEntity.getTags().add(tagEntity));
@@ -102,6 +103,7 @@ public class RecipeService {
                     oldRecipe.setServings(recipe.getServings());
                     oldRecipe.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
                     oldRecipe.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
+                    oldRecipe.setRating(recipe.getRating());
                     if (recipe.getImageBase64().length != 0) {
                         oldRecipe.setImage(recipe.getImageBase64());
                     }

@@ -13,6 +13,7 @@ import {Upload} from "@hilla/react-components/Upload.js";
 import {readAsDataURL} from 'promise-file-reader';
 import TagSelect from "Frontend/components/input/TagSelect";
 import SaveRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/SaveRecipe";
+import {Rating} from "react-simple-star-rating";
 
 export default function AddRecipeView() {
     const empty: SaveRecipe = {
@@ -23,6 +24,7 @@ export default function AddRecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
+        rating: 0,
         imageBase64: [],
         tags: [],
     };
@@ -66,6 +68,15 @@ export default function AddRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
+                <div>
+                    <p className="text-gray-500 text-md">Rating</p>
+                    <Rating
+                        emptyStyle={{display: "flex"}} fillStyle={{display: "-webkit-inline-box"}}
+                        initialValue={formik.values.rating}
+                        onClick={values => formik.setFieldValue("rating", values)}
+                    />
+                </div>
+
                 <TextArea
                     className={"w-full"}
                     name='description'

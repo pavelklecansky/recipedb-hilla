@@ -15,6 +15,7 @@ import SaveRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoint
 import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 import TagSelect from "Frontend/components/input/TagSelect";
+import {Rating} from "react-simple-star-rating";
 
 export default function EditRecipeView() {
     const empty: SaveRecipe = {
@@ -25,6 +26,7 @@ export default function EditRecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
+        rating: 0,
         imageBase64: [],
         tags: [],
     }
@@ -49,10 +51,11 @@ export default function EditRecipeView() {
                     servings: recipe.servings,
                     prepTimeInMinutes: recipe.prepTimeInMinutes,
                     tags: recipe.tags,
+                    rating: recipe.rating,
                     imageBase64: []
                 })
 
-            }).then(value =>  setLoaded(true))
+            }).then(value => setLoaded(true))
                 .catch(reason => {
                     console.log(reason);
                     Notification.show(reason, {theme: "error"});
@@ -102,6 +105,14 @@ export default function EditRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
+                <div>
+                    <p className="text-gray-500 text-md">Rating</p>
+                    <Rating
+                        emptyStyle={{display: "flex"}} fillStyle={{display: "-webkit-inline-box"}}
+                        initialValue={formik.values.rating}
+                        onClick={values => formik.setFieldValue("rating", values)}
+                    />
+                </div>
                 <TextArea
                     className={"w-full"}
                     name='description'

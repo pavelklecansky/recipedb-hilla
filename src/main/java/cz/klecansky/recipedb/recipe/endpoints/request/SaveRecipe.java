@@ -25,6 +25,8 @@ public class SaveRecipe {
     @Nonnull
     private String directions;
     @Nonnull
+    Integer rating;
+    @Nonnull
     private byte[] imageBase64;
     @Nonnull
     private Set<@Nonnull BasicTagRequest> tags;

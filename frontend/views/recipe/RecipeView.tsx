@@ -8,6 +8,7 @@ import '@szhsin/react-menu/dist/transitions/slide.css';
 import {ConfirmDialog} from "@hilla/react-components/ConfirmDialog.js";
 import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
+import {Rating} from "react-simple-star-rating";
 
 export default function RecipeView() {
     const empty: RecipeWithImageResponse = {
@@ -19,6 +20,7 @@ export default function RecipeView() {
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
+        rating: 0,
         imageBase64: "",
         tags: [],
     }
@@ -81,13 +83,22 @@ export default function RecipeView() {
                     <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 mt-0">
                         {recipe.name}
                     </h1>
+                    <div>
+                        <Rating
+                            className={"mb-4 mt-0"}
+                            emptyStyle={{display: "flex"}} fillStyle={{display: "-webkit-inline-box"}}
+                            initialValue={recipe.rating}
+                            readonly={true}
+                        />
+                    </div>
                     {recipe.tags.length > 0 &&
                         <div className={"rounded-lg bg-gray-100 p-2"}>
-                            {recipe.tags.map(value => (<a key={value.id} href={`/tag/${value.id}`} className={"text-lg mr-3"}><i
-                                className="text-black la la-tag"></i> {value.name}</a>))}
+                            {recipe.tags.map(value => (
+                                <a key={value.id} href={`/tag/${value.id}`} className={"text-lg mr-3"}><i
+                                    className="text-black la la-tag"></i> {value.name}</a>))}
                         </div>
                     }
-                    <p className="mb-8 leading-relaxed">{recipe.description}</p>
+                    <p className="mb-8 leading-relaxed text-l">{recipe.description}</p>
                     <div className="p-4 w-full">
                         <div className="flex rounded-lg bg-gray-100 p-4 flex-col xl:flex-row flex-wrap">
                             <div className={"w-full xl:w-1/2"}>
@@ -118,15 +129,15 @@ export default function RecipeView() {
                 <div>
                     <div>
                         <h2>Ingredients</h2>
-                        <span>
+                        <span className={"text-l"}>
                         {recipe.ingredients}
-                    </span>
+                        </span>
                     </div>
                     <div>
                         <h2>Directions</h2>
-                        <span>
+                        <span className={"text-l"}>
                         {recipe.directions}
-                    </span>
+                        </span>
                     </div>
                 </div>
             </div>

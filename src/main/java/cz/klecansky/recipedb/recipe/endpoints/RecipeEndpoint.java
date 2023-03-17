@@ -37,7 +37,8 @@ public class RecipeEndpoint {
     }
 
     public RecipeWithImageResponse saveRecipe(SaveRecipe recipe) {
-        return recipeService.save(recipe);
+        RecipeWithImageResponse save = recipeService.save(recipe);
+        return save;
     }
 
     public RecipeWithImageResponse update(UUID id, SaveRecipe recipe) {

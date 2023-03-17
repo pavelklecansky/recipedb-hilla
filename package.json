@@ -38,7 +38,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
-    "react-select": "^5.7.0"
+    "react-select": "^5.7.0",
+    "react-simple-star-rating": "^5.1.7"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "3.1.0",
@@ -99,7 +100,8 @@
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
     "@hilla/generator-typescript-plugin-backbone": "$@hilla/generator-typescript-plugin-backbone",
     "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
-    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli"
+    "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
+    "react-simple-star-rating": "$react-simple-star-rating"
   },
   "vaadin": {
     "dependencies": {
@@ -147,6 +149,6 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "7f73af95b6f4809b7b3fcf891db6fc4f81d329d2982725e61fc3c1c676980f78"
+    "hash": "0d9e240678c71a14e6195bdd4edace41b4e6d6973fc9eeabf22ad5de105c8755"
   }
 }
