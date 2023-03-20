@@ -19,6 +19,8 @@ import IngredientSelect from "Frontend/components/input/IngredientSelect";
 import IngredientEditor from "Frontend/components/input/IngredientEditor";
 import DynamicIngredientEditor from "Frontend/components/input/DynamicIngredientEditor";
 import Measurement from "Frontend/generated/cz/klecansky/recipedb/recipe/io/Measurement";
+import MDEditor from '@uiw/react-md-editor';
+import rehypeSanitize from "rehype-sanitize";
 
 export default function AddRecipeView() {
     const empty: SaveRecipe = {
@@ -73,6 +75,7 @@ export default function AddRecipeView() {
         <>
             <div className="m-m flex justify-between content-stretch flex-wrap items-baseline gap-m">
                 <TextField
+                    required={true}
                     className={"w-full"}
                     name='name'
                     label="Name"
@@ -135,22 +138,17 @@ export default function AddRecipeView() {
                 <DynamicIngredientEditor className={"w-full"} name='ingredients' value={formik.values.ingredients}
                                          onChange={values => formik.setFieldValue("ingredients", values)}
                                          onBlur={formik.handleChange}/>
-                {/*<TextArea*/}
-                {/*    className={"w-full"}*/}
-                {/*    name='ingredients'*/}
-                {/*    label="Ingredients"*/}
-                {/*    value={formik.values.ingredients}*/}
-                {/*    onChange={formik.handleChange}*/}
-                {/*    onBlur={formik.handleChange}*/}
-                {/*/>*/}
-                <TextArea
-                    className={"w-full"}
-                    name='directions'
-                    label="Directions"
-                    value={formik.values.directions}
-                    onChange={(formik.handleChange)}
-                    onBlur={formik.handleChange}
-                />
+                <div className="container">
+                    <MDEditor
+                        id={"directions"}
+                        value={formik.values.directions}
+                        onChange={values => formik.setFieldValue("directions", values)}
+                        onBlur={formik.handleChange}
+                        previewOptions={{
+                            rehypePlugins: [[rehypeSanitize]],
+                        }}
+                    />
+                </div>
                 <TagSelect
                     className={"w-full"}
                     name='tags'

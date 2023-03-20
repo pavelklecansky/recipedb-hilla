@@ -19,11 +19,9 @@ export default function IngredientSelect({name, className, value, onChange, onBl
     const [options, setOptions] = useState<BasicIngredient[]>([]);
     const [optionsString, setOptionsString] = useState<readonly Option[]>([]);
     const [selectValue, setSelectValue] = useState<Option | null>();
-    console.log(value);
 
     const handleChange = (selectedOption: SingleValue<Option>) => {
         let basicIngredient = options.find(value1 => value1.name == selectedOption?.value);
-        console.log(basicIngredient);
         if (onChange) {
             onChange(basicIngredient!);
         }

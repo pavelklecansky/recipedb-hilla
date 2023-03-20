@@ -18,6 +18,8 @@ import TagSelect from "Frontend/components/input/TagSelect";
 import {Rating} from "react-simple-star-rating";
 import DynamicIngredientEditor from "Frontend/components/input/DynamicIngredientEditor";
 import Measurement from "Frontend/generated/cz/klecansky/recipedb/recipe/io/Measurement";
+import MDEditor from "@uiw/react-md-editor";
+import rehypeSanitize from "rehype-sanitize";
 
 export default function EditRecipeView() {
     const empty: SaveRecipe = {
@@ -176,22 +178,17 @@ export default function EditRecipeView() {
                                              onChange={values => formik.setFieldValue("ingredients", values)}
                                              onBlur={formik.handleChange}/>
                 }
-                {/*<TextArea*/}
-                {/*    className={"w-full"}*/}
-                {/*    name='ingredients'*/}
-                {/*    label="Ingredients"*/}
-                {/*    value={formik.values.ingredients}*/}
-                {/*    onChange={formik.handleChange}*/}
-                {/*    onBlur={formik.handleChange}*/}
-                {/*/>*/}
-                <TextArea
-                    className={"w-full"}
-                    name='directions'
-                    label="Directions"
-                    value={formik.values.directions}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleChange}
-                />
+                <div className="container">
+                    <MDEditor
+                        id={"directions"}
+                        value={formik.values.directions}
+                        onChange={values => formik.setFieldValue("directions", values)}
+                        onBlur={formik.handleChange}
+                        previewOptions={{
+                            rehypePlugins: [[rehypeSanitize]],
+                        }}
+                    />
+                </div>
                 {loaded && formik.values.name != "" &&
                     <TagSelect
                         className={"w-full"}

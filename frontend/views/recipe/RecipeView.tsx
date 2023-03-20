@@ -9,6 +9,7 @@ import {ConfirmDialog} from "@hilla/react-components/ConfirmDialog.js";
 import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 import {Rating} from "react-simple-star-rating";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function RecipeView() {
     const empty: RecipeWithImageResponse = {
@@ -111,7 +112,8 @@ export default function RecipeView() {
                             </div>
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Total Time:</h3>
-                                <span className={"text-xl"}>{(recipe.prepTimeInMinutes ?? 0) + (recipe.cookTimeInMinutes ?? 0)} minutes</span>
+                                <span
+                                    className={"text-xl"}>{(recipe.prepTimeInMinutes ?? 0) + (recipe.cookTimeInMinutes ?? 0)} minutes</span>
                             </div>
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Servings:</h3>
@@ -129,15 +131,15 @@ export default function RecipeView() {
                 <div>
                     <div>
                         <h2>Ingredients</h2>
-                        <ul className={"text-2xl list-disc  ml-8"}>
+                        <ul className={"text-xl list-disc  ml-8"}>
                             {recipe.ingredients.map(value => (
-                                <li>{value?.amount} {value?.measurement} {value?.name}</li>))}
+                                <li key={value.name}>{value?.amount} {value?.measurement} {value?.name}</li>))}
                         </ul>
                     </div>
                     <div>
                         <h2>Directions</h2>
-                        <span className={"text-2xl"}>
-                        {recipe.directions}
+                        <span className={"text-xl"}>
+                        <MDEditor.Markdown source={recipe.directions}/>
                         </span>
                     </div>
                 </div>

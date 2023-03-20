@@ -19,11 +19,7 @@ export default function DynamicIngredientEditor({
                                                     onChange,
                                                     onBlur
                                                 }: DynamicIngredientEditorProps) {
-
-
     const [inputFields, setInputFields] = useState<IngredientRequest[]>(value!);
-
-    console.log(inputFields);
 
     const handleFormChange = (index: number, ingredient: IngredientRequest) => {
         let data = [...inputFields];

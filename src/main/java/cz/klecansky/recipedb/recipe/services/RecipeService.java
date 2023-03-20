@@ -84,7 +84,7 @@ public class RecipeService {
         recipeEntity.setId(UUID.randomUUID());
         recipeEntity.setName(recipe.getName());
         recipeEntity.setDescription(recipe.getDescription());
-        recipeEntity.setDirections(recipe.getDescription());
+        recipeEntity.setDirections(recipe.getDirections());
         recipeEntity.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
         recipeEntity.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
         recipeEntity.setServings(recipe.getServings());

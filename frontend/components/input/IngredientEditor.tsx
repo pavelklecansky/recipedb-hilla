@@ -28,7 +28,6 @@ export default function ({name, className, value, onChange, onBlur}: IngredientE
     const handleChangeIngrediance = (newIngrediance: BasicIngredient) => {
         let data = {...options, name: newIngrediance.name};
         setOptions(data);
-        console.log(data);
         if (onChange) {
             onChange(data);
         }
