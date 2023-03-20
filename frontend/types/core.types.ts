@@ -26,3 +26,7 @@ export type RouteMatch = ReturnType<typeof useMatches> extends (infer T)[] ? T :
 
 export type ViewRouteMatch = Readonly<Override<RouteMatch, ViewMeta>>;
 
+export interface Option {
+    readonly label: string;
+    readonly value: string;
+}

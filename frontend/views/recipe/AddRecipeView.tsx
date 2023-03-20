@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {RecipeEndpoint} from "Frontend/generated/endpoints";
 import {Notification} from "@hilla/react-components/Notification.js";
 import {FormikErrors, useFormik} from "formik";
-import {EndpointValidationError} from "@hilla/frontend";
+import {EndpointError, EndpointValidationError} from "@hilla/frontend";
 import {TextField} from "@hilla/react-components/TextField.js";
 import {Button} from "@hilla/react-components/Button.js";
 import {NumberField} from "@hilla/react-components/NumberField.js";
@@ -14,13 +14,22 @@ import {readAsDataURL} from 'promise-file-reader';
 import TagSelect from "Frontend/components/input/TagSelect";
 import SaveRecipe from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/request/SaveRecipe";
 import {Rating} from "react-simple-star-rating";
+import MeasurementSelect from "Frontend/components/input/MeasurementSelect";
+import IngredientSelect from "Frontend/components/input/IngredientSelect";
+import IngredientEditor from "Frontend/components/input/IngredientEditor";
+import DynamicIngredientEditor from "Frontend/components/input/DynamicIngredientEditor";
+import Measurement from "Frontend/generated/cz/klecansky/recipedb/recipe/io/Measurement";
 
 export default function AddRecipeView() {
     const empty: SaveRecipe = {
         name: "",
         description: "",
         directions: "",
-        ingredients: "",
+        ingredients: [{
+            amount: 0,
+            measurement: Measurement.gram,
+            name: ""
+        }],
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
@@ -50,6 +59,9 @@ export default function AddRecipeView() {
                         }
                     }
                     setErrors(errors);
+                }
+                if (e instanceof EndpointError) {
+                    Notification.show((e as EndpointError).message, {theme: "error"});
                 }
             } finally {
                 setSubmitting(false);
@@ -120,14 +132,17 @@ export default function AddRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
-                <TextArea
-                    className={"w-full"}
-                    name='ingredients'
-                    label="Ingredients"
-                    value={formik.values.ingredients}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleChange}
-                />
+                <DynamicIngredientEditor className={"w-full"} name='ingredients' value={formik.values.ingredients}
+                                         onChange={values => formik.setFieldValue("ingredients", values)}
+                                         onBlur={formik.handleChange}/>
+                {/*<TextArea*/}
+                {/*    className={"w-full"}*/}
+                {/*    name='ingredients'*/}
+                {/*    label="Ingredients"*/}
+                {/*    value={formik.values.ingredients}*/}
+                {/*    onChange={formik.handleChange}*/}
+                {/*    onBlur={formik.handleChange}*/}
+                {/*/>*/}
                 <TextArea
                     className={"w-full"}
                     name='directions'

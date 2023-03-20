@@ -4,6 +4,7 @@ import cz.klecansky.recipedb.tag.endpoints.request.BasicTagRequest;
 import dev.hilla.Nonnull;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class SaveRecipe {
     @Nonnull
     private Integer servings;
     @Nonnull
-    private String ingredients;
+    private List<@Nonnull IngredientRequest> ingredients;
     @Nonnull
     private String directions;
     @Nonnull

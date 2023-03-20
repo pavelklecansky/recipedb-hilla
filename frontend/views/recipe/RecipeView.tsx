@@ -16,7 +16,7 @@ export default function RecipeView() {
         name: "",
         description: "",
         directions: "",
-        ingredients: "",
+        ingredients: [],
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
@@ -98,24 +98,24 @@ export default function RecipeView() {
                                     className="text-black la la-tag"></i> {value.name}</a>))}
                         </div>
                     }
-                    <p className="mb-8 leading-relaxed text-l">{recipe.description}</p>
+                    <p className="mb-8 leading-relaxed text-2xl">{recipe.description}</p>
                     <div className="p-4 w-full">
                         <div className="flex rounded-lg bg-gray-100 p-4 flex-col xl:flex-row flex-wrap">
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Prep Time:</h3>
-                                <span>{recipe.prepTimeInMinutes} minutes</span>
+                                <span className={"text-xl"}>{recipe.prepTimeInMinutes} minutes</span>
                             </div>
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Cook Time:</h3>
-                                <span>{recipe.cookTimeInMinutes} minutes</span>
+                                <span className={"text-xl"}>{recipe.cookTimeInMinutes} minutes</span>
                             </div>
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Total Time:</h3>
-                                <span>{(recipe.prepTimeInMinutes ?? 0) + (recipe.cookTimeInMinutes ?? 0)} minutes</span>
+                                <span className={"text-xl"}>{(recipe.prepTimeInMinutes ?? 0) + (recipe.cookTimeInMinutes ?? 0)} minutes</span>
                             </div>
                             <div className={"w-full xl:w-1/2"}>
                                 <h3>Servings:</h3>
-                                <span>{recipe.servings}</span>
+                                <span className={"text-xl"}>{recipe.servings}</span>
                             </div>
                         </div>
                     </div>
@@ -125,17 +125,18 @@ export default function RecipeView() {
                          src={imgUrl}/>
                 </div>
             </div>
-            <div className="container mx-auto flex md:flex-row flex-col items-center">
+            <div className="container mx-auto flex md:flex-row flex-col items-left lg:items-center">
                 <div>
                     <div>
                         <h2>Ingredients</h2>
-                        <span className={"text-l"}>
-                        {recipe.ingredients}
-                        </span>
+                        <ul className={"text-2xl list-disc  ml-8"}>
+                            {recipe.ingredients.map(value => (
+                                <li>{value?.amount} {value?.measurement} {value?.name}</li>))}
+                        </ul>
                     </div>
                     <div>
                         <h2>Directions</h2>
-                        <span className={"text-l"}>
+                        <span className={"text-2xl"}>
                         {recipe.directions}
                         </span>
                     </div>

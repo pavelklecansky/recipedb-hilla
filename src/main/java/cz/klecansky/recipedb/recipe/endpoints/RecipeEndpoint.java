@@ -1,16 +1,14 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
+import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
 import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
-import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import cz.klecansky.recipedb.recipe.services.RecipeService;
 import dev.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
@@ -28,6 +26,10 @@ public class RecipeEndpoint {
         return recipeService.findAll();
     }
 
+    public List<BasicIngredient> findAllIngredients() {
+        return recipeService.findAllIngredients();
+    }
+
     public RecipeWithImageResponse findById(UUID id) {
         return recipeService.findById(id).orElseThrow();
     }
@@ -37,8 +39,7 @@ public class RecipeEndpoint {
     }
 
     public RecipeWithImageResponse saveRecipe(SaveRecipe recipe) {
-        RecipeWithImageResponse save = recipeService.save(recipe);
-        return save;
+        return recipeService.save(recipe);
     }
 
     public RecipeWithImageResponse update(UUID id, SaveRecipe recipe) {
@@ -49,4 +50,7 @@ public class RecipeEndpoint {
         recipeService.deleteById(id);
     }
 
+    public BasicIngredient createNewIngredient(String name) {
+        return recipeService.createNewIngredient(name);
+    }
 }

@@ -1,19 +1,11 @@
-import Creatable from 'react-select/creatable';
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {TagEndpoint} from "Frontend/generated/endpoints";
-import TagEntity from "Frontend/generated/cz/klecansky/recipedb/tag/io/TagEntity";
 import Select, {MultiValue} from "react-select";
 import BasicTagResponse from "Frontend/generated/cz/klecansky/recipedb/tag/endpoints/response/BasicTagResponse";
+import {Option} from "Frontend/types/core.types";
+import {createOption} from 'Frontend/utils/core.utils';
+import Measurement from "Frontend/generated/cz/klecansky/recipedb/recipe/io/Measurement";
 
-interface Option {
-    readonly label: string;
-    readonly value: string;
-}
-
-const createOption = (label: string) => ({
-    label,
-    value: label,
-});
 
 interface TagSelectProps {
     name: string;
@@ -29,6 +21,7 @@ export default function TagSelect({name, className, value, onChange, onBlur}: Ta
     const [selectOptions, setSelectOptions] = useState<Option[]>([]);
 
     const handleChange = (selectedOption: MultiValue<Option>) => {
+
         setSelectOptions([...selectedOption]);
         value = options.filter(option => selectedOption.map(selected => selected.value).includes(option.name));
         console.log(value);
@@ -64,7 +57,6 @@ export default function TagSelect({name, className, value, onChange, onBlur}: Ta
             className={className}
             isMulti
             options={optionsString}
-            /*TODO tagSelect is not showing*/
             defaultValue={value?.map(tags => createOption(tags.name))}
             onChange={handleChange}
             onBlur={handleBlur}

@@ -16,13 +16,19 @@ import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 import TagSelect from "Frontend/components/input/TagSelect";
 import {Rating} from "react-simple-star-rating";
+import DynamicIngredientEditor from "Frontend/components/input/DynamicIngredientEditor";
+import Measurement from "Frontend/generated/cz/klecansky/recipedb/recipe/io/Measurement";
 
 export default function EditRecipeView() {
     const empty: SaveRecipe = {
         name: "",
         description: "",
         directions: "",
-        ingredients: "",
+        ingredients: [{
+            amount: 0,
+            measurement: Measurement.gram,
+            name: "",
+        }],
         servings: 0,
         cookTimeInMinutes: 0,
         prepTimeInMinutes: 0,
@@ -41,7 +47,7 @@ export default function EditRecipeView() {
         if (id != null) {
             RecipeEndpoint.findById(id).then((recipe) => {
                 setImage(recipe.imageBase64);
-
+                console.log()
                 setRecipe({
                     name: recipe.name,
                     cookTimeInMinutes: recipe.cookTimeInMinutes,
@@ -54,13 +60,14 @@ export default function EditRecipeView() {
                     rating: recipe.rating,
                     imageBase64: []
                 })
-
-            }).then(value => setLoaded(true))
-                .catch(reason => {
-                    console.log(reason);
-                    Notification.show(reason, {theme: "error"});
-                    navigate("/recipe");
-                });
+                setTimeout(() => {
+                    setLoaded(true);
+                }, 50)
+            }).catch(reason => {
+                console.log(reason);
+                Notification.show(reason, {theme: "error"});
+                navigate("/recipe");
+            });
         }
     }, []);
 
@@ -164,14 +171,19 @@ export default function EditRecipeView() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleChange}
                 />
-                <TextArea
-                    className={"w-full"}
-                    name='ingredients'
-                    label="Ingredients"
-                    value={formik.values.ingredients}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleChange}
-                />
+                {loaded &&
+                    <DynamicIngredientEditor className={"w-full"} name='ingredients' value={formik.values.ingredients}
+                                             onChange={values => formik.setFieldValue("ingredients", values)}
+                                             onBlur={formik.handleChange}/>
+                }
+                {/*<TextArea*/}
+                {/*    className={"w-full"}*/}
+                {/*    name='ingredients'*/}
+                {/*    label="Ingredients"*/}
+                {/*    value={formik.values.ingredients}*/}
+                {/*    onChange={formik.handleChange}*/}
+                {/*    onBlur={formik.handleChange}*/}
+                {/*/>*/}
                 <TextArea
                     className={"w-full"}
                     name='directions'

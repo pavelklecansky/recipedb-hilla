@@ -5,6 +5,7 @@ import cz.klecansky.recipedb.tag.io.TagEntity;
 import dev.hilla.Nonnull;
 import lombok.Value;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class RecipeWithImageResponse {
     @Nonnull
     Integer servings;
     @Nonnull
-    String ingredients;
+    List<@Nonnull IngredientResponse> ingredients;
     @Nonnull
     String directions;
     @Nonnull
