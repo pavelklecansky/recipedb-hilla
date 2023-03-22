@@ -55,6 +55,7 @@
     "mkdirp": "1.0.4",
     "postcss": "^8.4.21",
     "rollup-plugin-brotli": "3.1.0",
+    "sass": "^1.59.3",
     "strip-css-comments": "5.0.0",
     "tailwindcss": "^3.2.7",
     "transform-ast": "2.4.4",
@@ -153,6 +154,6 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "e7adb68f9363be1187c2c869b5cb6bf75c4ded515b6e21102af4809fdfcaeb67"
+    "hash": "ee172bd211ea8aabd208c62c91549c1ca34fc40edc781b7884d0002533a561e0"
   }
 }

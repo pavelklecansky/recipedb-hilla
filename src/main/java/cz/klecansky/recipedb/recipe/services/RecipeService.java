@@ -4,6 +4,7 @@ import cz.klecansky.recipedb.recipe.endpoints.request.IngredientRequest;
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
 import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
 import cz.klecansky.recipedb.recipe.endpoints.response.IngredientResponse;
+import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.recipe.io.*;
 import cz.klecansky.recipedb.tag.endpoints.request.BasicTagRequest;
@@ -13,6 +14,10 @@ import dev.hilla.exception.EndpointException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +31,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 
 @Service
@@ -39,8 +43,11 @@ public class RecipeService {
     @NonNull IngredientEntityRepository ingredientEntityRepository;
 
     @Transactional
-    public List<RecipeWithImageResponse> findAll() {
-        return recipeRepository.findAll().stream().map(this::convertRecipeEntityToRecipeWithImageResponse).toList();
+    public PageResponse<RecipeWithImageResponse> findAll(Integer page, Integer size, String sort) {
+        String[] split = sort.split("\\|");
+        Pageable pagingSort = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(split[1]), split[0]));
+        Page<RecipeWithImageResponse> map = recipeRepository.findAll(pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        return new PageResponse<>(map.toList(), map.getTotalElements());
     }
 
     public List<BasicIngredient> findAllIngredients() {

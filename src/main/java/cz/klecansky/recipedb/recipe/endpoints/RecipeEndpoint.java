@@ -2,16 +2,19 @@ package cz.klecansky.recipedb.recipe.endpoints;
 
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
 import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
+import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.recipe.services.RecipeService;
 import dev.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Endpoint
@@ -22,8 +25,8 @@ public class RecipeEndpoint {
 
     @NonNull RecipeService recipeService;
 
-    public List<RecipeWithImageResponse> findAll() {
-        return recipeService.findAll();
+    public PageResponse<RecipeWithImageResponse> findAll(Optional<Integer> page, Optional<Integer> size, Optional<String> sort) {
+        return recipeService.findAll(page.orElse(0), size.orElse(5), sort.orElse("name|ASC"));
     }
 
     public List<BasicIngredient> findAllIngredients() {

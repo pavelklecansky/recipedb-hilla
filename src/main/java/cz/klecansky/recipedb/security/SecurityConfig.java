@@ -40,7 +40,7 @@ public class SecurityConfig extends VaadinWebSecurity {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         setLoginView(http, "/login");
         setStatelessAuthentication(http, new SecretKeySpec(Base64.getDecoder().decode(secretKey), JwsAlgorithms.HS256),
-                "cz.klecansky.recipedb");
+                "cz.klecansky.recipedb", 86400);
     }
 
 
