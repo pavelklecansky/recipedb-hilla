@@ -25,8 +25,8 @@ public class RecipeEndpoint {
 
     @NonNull RecipeService recipeService;
 
-    public PageResponse<RecipeWithImageResponse> findAll(Optional<Integer> page, Optional<Integer> size, Optional<String> sort) {
-        return recipeService.findAll(page.orElse(0), size.orElse(5), sort.orElse("name|ASC"));
+    public PageResponse<RecipeWithImageResponse> findAll(Optional<Integer> page, Optional<Integer> size, Optional<String> sort, Optional<String> search) {
+        return recipeService.findAll(page.orElse(0), size.orElse(5), sort.orElse("name|ASC"), search.orElse(""));
     }
 
     public List<BasicIngredient> findAllIngredients() {

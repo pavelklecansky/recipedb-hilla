@@ -43,10 +43,15 @@ public class RecipeService {
     @NonNull IngredientEntityRepository ingredientEntityRepository;
 
     @Transactional
-    public PageResponse<RecipeWithImageResponse> findAll(Integer page, Integer size, String sort) {
+    public PageResponse<RecipeWithImageResponse> findAll(Integer page, Integer size, String sort, String search) {
         String[] split = sort.split("\\|");
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(split[1]), split[0]));
-        Page<RecipeWithImageResponse> map = recipeRepository.findAll(pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        Page<RecipeWithImageResponse> map;
+        if (search.isEmpty()) {
+            map = recipeRepository.findAll(pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        } else {
+            map = recipeRepository.findByNameContaining(search, pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        }
         return new PageResponse<>(map.toList(), map.getTotalElements());
     }
 

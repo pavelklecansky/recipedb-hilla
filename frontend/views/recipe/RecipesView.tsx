@@ -6,6 +6,7 @@ import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 import Pagination from 'Frontend/components/grid/Pagination';
 import {Select, SelectItem} from "@hilla/react-components/Select.js";
+import {TextField} from "@hilla/react-components/TextField.js";
 
 let PageSize = 6;
 
@@ -13,6 +14,7 @@ export default function RecipesView() {
     const [recipes, setRecipes] = useState<RecipeWithImageResponse[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState("");
     const [totalCount, setTotalCount] = useState(0);
     const [criteria, setCriteria] = useState<SelectItem[]>();
     const [sort, setSort] = useState<string>("name|ASC");
@@ -34,10 +36,10 @@ export default function RecipesView() {
         loadNewData().then(value => setTimeout(() => {
             setLoaded(true);
         }, 50));
-    }, [currentPage, sort]);
+    }, [currentPage, sort, search]);
 
 
-    const loadNewData = () => RecipeEndpoint.findAll(currentPage - 1, PageSize, sort).then(value => {
+    const loadNewData = () => RecipeEndpoint.findAll(currentPage - 1, PageSize, sort, search).then(value => {
             setRecipes(value.data!)
             setTotalCount(value.count);
         }
@@ -47,6 +49,13 @@ export default function RecipesView() {
         <>
             {loaded && <div>
                 <div className={'flex p-l gap-m justify-end'}>
+                    <TextField
+                        className={"w-full"}
+                        name='search'
+                        placeholder={"Search..."}
+                        value={search}
+                        onChange={event => setSearch(event.target.value)}
+                    />
                     <Select
                         items={criteria}
                         value={sort}
