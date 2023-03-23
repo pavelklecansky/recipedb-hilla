@@ -21,10 +21,8 @@ export default function TagSelect({name, className, value, onChange, onBlur}: Ta
     const [selectOptions, setSelectOptions] = useState<Option[]>([]);
 
     const handleChange = (selectedOption: MultiValue<Option>) => {
-
         setSelectOptions([...selectedOption]);
         value = options.filter(option => selectedOption.map(selected => selected.value).includes(option.name));
-        console.log(value);
         if (onChange) {
             onChange(value);
         }
@@ -32,7 +30,6 @@ export default function TagSelect({name, className, value, onChange, onBlur}: Ta
 
     const handleBlur = () => {
         if (onBlur) {
-            console.log(name, true)
             onBlur(name, true);
         }
     };
@@ -51,7 +48,6 @@ export default function TagSelect({name, className, value, onChange, onBlur}: Ta
 
 
     return (<>
-
         <Select
             name={name}
             className={className}

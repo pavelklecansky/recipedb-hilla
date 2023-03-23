@@ -1,5 +1,6 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
+import cz.klecansky.recipedb.recipe.endpoints.request.PaginationRequest;
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
 import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
 import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
@@ -25,8 +26,8 @@ public class RecipeEndpoint {
 
     @NonNull RecipeService recipeService;
 
-    public PageResponse<RecipeWithImageResponse> findAll(Optional<Integer> page, Optional<Integer> size, Optional<String> sort, Optional<String> search) {
-        return recipeService.findAll(page.orElse(0), size.orElse(5), sort.orElse("name|ASC"), search.orElse(""));
+    public PageResponse<RecipeWithImageResponse> findAll(PaginationRequest request) {
+        return recipeService.findAll(request.page().orElse(0), request.pageSize().orElse(5), request.sort().orElse("name|ASC"), request.search().orElse(""));
     }
 
     public List<BasicIngredient> findAllIngredients() {
@@ -37,8 +38,8 @@ public class RecipeEndpoint {
         return recipeService.findById(id).orElseThrow();
     }
 
-    public List<RecipeWithImageResponse> findAllByTagId(UUID id) {
-        return recipeService.findAllByTagsId(id);
+    public PageResponse<RecipeWithImageResponse> findAllByTagId(PaginationRequest request) {
+        return recipeService.findAllByTagsId(request.id().orElseThrow(), request.page().orElse(0), request.pageSize().orElse(5), request.sort().orElse("name|ASC"), request.search().orElse(""));
     }
 
     public RecipeWithImageResponse saveRecipe(SaveRecipe recipe) {

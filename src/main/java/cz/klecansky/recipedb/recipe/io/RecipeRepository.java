@@ -11,6 +11,10 @@ import java.util.UUID;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<RecipeEntity, UUID> {
-    List<RecipeEntity> findAllByTagsId(UUID uuid);
+    Page<RecipeEntity> findAllByTagsId(UUID uuid, Pageable pageable);
+
+    Page<RecipeEntity> findAllByTagsIdAndNameContaining(UUID uuid, String name, Pageable pageable);
+
     Page<RecipeEntity> findByNameContaining(String name, Pageable pageable);
+
 }

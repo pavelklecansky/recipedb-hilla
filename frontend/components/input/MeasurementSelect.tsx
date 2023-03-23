@@ -15,12 +15,10 @@ interface TagSelectProps {
 }
 
 export default function TagSelect({name, className, value, onChange, onBlur}: TagSelectProps) {
-    const [options, setOptions] = useState<Measurement[]>(ToArray(Measurement));
     const [optionsString, setOptionsString] = useState<readonly Option[]>(ToArray(Measurement).map(value => createOption(value)));
 
     const handleChange = (selectedOption: SingleValue<Option>) => {
         let measurementElement: Measurement = selectedOption?.value as Measurement;
-        console.log(value);
         if (onChange) {
             onChange(measurementElement);
         }

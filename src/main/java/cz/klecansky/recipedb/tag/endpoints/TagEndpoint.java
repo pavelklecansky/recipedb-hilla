@@ -1,6 +1,7 @@
 package cz.klecansky.recipedb.tag.endpoints;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import cz.klecansky.recipedb.recipe.endpoints.request.PaginationRequest;
+import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.tag.endpoints.response.BasicTagResponse;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.services.TagService;
@@ -9,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
@@ -27,7 +27,11 @@ public class TagEndpoint {
         return tagService.findAll();
     }
 
-    public TagEntity findById(UUID id) {
+    public PageResponse<BasicTagResponse> findAllPagination(PaginationRequest request) {
+        return tagService.findAll(request.page().orElse(0), request.pageSize().orElse(5), request.sort().orElse("name|ASC"), request.search().orElse(""));
+    }
+
+    public BasicTagResponse findById(UUID id) {
         return tagService.findById(id).orElseThrow();
     }
 

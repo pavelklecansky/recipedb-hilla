@@ -1,5 +1,7 @@
 package cz.klecansky.recipedb.tag.services;
 
+import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
+import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.tag.endpoints.response.BasicTagResponse;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.io.TagEntityRepository;
@@ -7,6 +9,10 @@ import dev.hilla.exception.EndpointException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +28,20 @@ public class TagService {
 
     @NonNull TagEntityRepository tagRepository;
 
-    public List<BasicTagResponse> findAll() {
-        return tagRepository.findAll().stream().map(this::convertTagEntityToBasicTagResponse).toList();
+    public PageResponse<BasicTagResponse> findAll(Integer page, Integer size, String sort, String search) {
+        String[] split = sort.split("\\|");
+        Pageable pagingSort = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(split[1]), split[0]));
+        Page<BasicTagResponse> map;
+        if (search.isEmpty()) {
+            map = tagRepository.findAll(pagingSort).map(this::convertTagEntityToBasicTagResponse);
+        } else {
+            map = tagRepository.findByNameContaining(search, pagingSort).map(this::convertTagEntityToBasicTagResponse);
+        }
+        return new PageResponse<>(map.toList(), map.getTotalElements());
     }
 
-    public Optional<TagEntity> findById(UUID id) {
-        return tagRepository.findById(id);
+    public Optional<BasicTagResponse> findById(UUID id) {
+        return tagRepository.findById(id).map(this::convertTagEntityToBasicTagResponse);
     }
 
     public TagEntity save(String tag) {
@@ -47,5 +61,9 @@ public class TagService {
 
     private BasicTagResponse convertTagEntityToBasicTagResponse(TagEntity tagEntity) {
         return new BasicTagResponse(tagEntity.getId(), tagEntity.getName());
+    }
+
+    public List<BasicTagResponse> findAll() {
+        return tagRepository.findAll().stream().map(this::convertTagEntityToBasicTagResponse).toList();
     }
 }

@@ -59,11 +59,6 @@ public class RecipeService {
         return ingredientEntityRepository.findAll().stream().map(ingredient -> new BasicIngredient(ingredient.getId(), ingredient.getName())).toList();
     }
 
-    @Transactional
-    public List<RecipeWithImageResponse> findAllByTagsId(UUID tag) {
-        return recipeRepository.findAllByTagsId(tag).stream().map(this::convertRecipeEntityToRecipeWithImageResponse).toList();
-    }
-
     private RecipeWithImageResponse convertRecipeEntityToRecipeWithImageResponse(RecipeEntity recipe) {
         String base64EncodedImageBytes = "";
         if (recipe.getImage() != null) {
@@ -158,5 +153,17 @@ public class RecipeService {
         ingredientEntity.setName(name);
         IngredientEntity save = ingredientEntityRepository.save(ingredientEntity);
         return new BasicIngredient(save.getId(), save.getName());
+    }
+
+    public PageResponse<RecipeWithImageResponse> findAllByTagsId(String id, Integer page, Integer size, String sort, String search) {
+        String[] split = sort.split("\\|");
+        Pageable pagingSort = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(split[1]), split[0]));
+        Page<RecipeWithImageResponse> map;
+        if (search.isEmpty()) {
+            map = recipeRepository.findAllByTagsId(UUID.fromString(id), pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        } else {
+            map = recipeRepository.findAllByTagsIdAndNameContaining(UUID.fromString(id), search, pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+        }
+        return new PageResponse<>(map.toList(), map.getTotalElements());
     }
 }
