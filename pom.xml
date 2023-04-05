@@ -125,6 +125,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
@@ -157,11 +162,20 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!-- Clean build and startup time for Vaadin apps sometimes may exceed
                      the default Spring Boot's 30sec timeout.  -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-image</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5848</jvmArguments>
                     <wait>500</wait>
                     <maxAttempts>240</maxAttempts>
+                    <imageName>recipedb</imageName>
                 </configuration>
+
             </plugin>
 
             <!--

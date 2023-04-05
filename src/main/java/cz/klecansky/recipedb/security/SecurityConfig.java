@@ -36,7 +36,7 @@ public class SecurityConfig extends VaadinWebSecurity {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-
+        http.csrf().ignoringAntMatchers("/connect/**", "/login");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         setLoginView(http, "/login");
         setStatelessAuthentication(http, new SecretKeySpec(Base64.getDecoder().decode(secretKey), JwsAlgorithms.HS256),

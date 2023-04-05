@@ -28,12 +28,14 @@ public class RecipeEntity {
     @OneToMany(
             mappedBy = "recipe",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
     @Column(columnDefinition = "TEXT")
     private String directions;
     Integer rating;
+
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
     @Basic(fetch = FetchType.LAZY)
@@ -42,7 +44,7 @@ public class RecipeEntity {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
-    })
+    }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "recipe_tag",
             joinColumns = {@JoinColumn(name = "recipe_id")},

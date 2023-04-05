@@ -55,6 +55,10 @@ public class RecipeService {
         return new PageResponse<>(map.toList(), map.getTotalElements());
     }
 
+    public List<RecipeWithImageResponse> findAll() {
+        return recipeRepository.findAll().stream().map(this::convertRecipeEntityToRecipeWithImageResponse).toList();
+    }
+
     public List<BasicIngredient> findAllIngredients() {
         return ingredientEntityRepository.findAll().stream().map(ingredient -> new BasicIngredient(ingredient.getId(), ingredient.getName())).toList();
     }
@@ -82,7 +86,7 @@ public class RecipeService {
     @Transactional
     public RecipeWithImageResponse save(SaveRecipe recipe) {
         RecipeEntity recipeEntity = createRecipeToRecipeEntity(recipe);
-        RecipeEntity save = recipeRepository.save(recipeEntity);
+        RecipeEntity save = recipeRepository.saveAndFlush(recipeEntity);
         return convertRecipeEntityToRecipeWithImageResponse(save);
     }
 
@@ -116,8 +120,14 @@ public class RecipeService {
         return new IngredientResponse(recipeIngredient.getIngredient().getName(), recipeIngredient.getMeasurement(), recipeIngredient.getAmount());
     }
 
+    @Transactional
+    public void deleteAll() {
+        recipeRepository.deleteAll();
+    }
+
+    @Transactional
     public void deleteById(UUID id) {
-        recipeRepository.deleteById(id);
+        findById(id).ifPresent(recipeWithImageResponse -> recipeRepository.deleteById(id));
     }
 
     public Optional<RecipeWithImageResponse> update(UUID id, SaveRecipe recipe) {

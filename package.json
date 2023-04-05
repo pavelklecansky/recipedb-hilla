@@ -20,11 +20,13 @@
     "@vaadin-component-factory/vcf-nav": "1.0.6",
     "@vaadin/bundles": "23.3.7",
     "@vaadin/common-frontend": "0.0.17",
+    "@vaadin/cookie-consent": "23.3.7",
     "@vaadin/icon": "23.3.7",
     "@vaadin/icons": "23.3.7",
     "@vaadin/polymer-legacy-adapter": "23.3.7",
     "@vaadin/router": "1.7.4",
     "@vaadin/tooltip": "23.3.7",
+    "@vaadin/vaadin-cookie-consent": "23.3.7",
     "@vaadin/vaadin-icon": "23.3.7",
     "@vaadin/vaadin-icons": "23.3.7",
     "@vaadin/vaadin-lumo-styles": "23.3.7",
@@ -106,7 +108,9 @@
     "@hilla/generator-typescript-cli": "$@hilla/generator-typescript-cli",
     "react-simple-star-rating": "$react-simple-star-rating",
     "@uiw/react-md-editor": "$@uiw/react-md-editor",
-    "rehype-sanitize": "$rehype-sanitize"
+    "rehype-sanitize": "$rehype-sanitize",
+    "@vaadin/cookie-consent": "$@vaadin/cookie-consent",
+    "@vaadin/vaadin-cookie-consent": "$@vaadin/vaadin-cookie-consent"
   },
   "vaadin": {
     "dependencies": {
@@ -125,11 +129,13 @@
       "@polymer/polymer": "3.5.1",
       "@vaadin/bundles": "23.3.7",
       "@vaadin/common-frontend": "0.0.17",
+      "@vaadin/cookie-consent": "23.3.7",
       "@vaadin/icon": "23.3.7",
       "@vaadin/icons": "23.3.7",
       "@vaadin/polymer-legacy-adapter": "23.3.7",
       "@vaadin/router": "1.7.4",
       "@vaadin/tooltip": "23.3.7",
+      "@vaadin/vaadin-cookie-consent": "23.3.7",
       "@vaadin/vaadin-icon": "23.3.7",
       "@vaadin/vaadin-icons": "23.3.7",
       "@vaadin/vaadin-lumo-styles": "23.3.7",
@@ -154,6 +160,6 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "ee172bd211ea8aabd208c62c91549c1ca34fc40edc781b7884d0002533a561e0"
+    "hash": "8b3a91aac0a306c8bfc673b5f83f35bd50ccaad64cab1d91d9e4c097e91c99ee"
   }
 }

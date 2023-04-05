@@ -12,12 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.PermitAll;
 import java.security.Principal;
 import java.util.Optional;
 
 
 @Endpoint
-@AnonymousAllowed
+@PermitAll
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class UserEndpoint {

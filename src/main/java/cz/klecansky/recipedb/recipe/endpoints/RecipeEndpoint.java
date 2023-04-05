@@ -1,5 +1,7 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import cz.klecansky.recipedb.core.exception.ResourceNotFoundException;
 import cz.klecansky.recipedb.recipe.endpoints.request.PaginationRequest;
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
 import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
@@ -10,12 +12,10 @@ import dev.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Endpoint
@@ -35,7 +35,7 @@ public class RecipeEndpoint {
     }
 
     public RecipeWithImageResponse findById(UUID id) {
-        return recipeService.findById(id).orElseThrow();
+        return recipeService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recipe not found."));
     }
 
     public PageResponse<RecipeWithImageResponse> findAllByTagId(PaginationRequest request) {

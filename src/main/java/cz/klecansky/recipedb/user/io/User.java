@@ -22,6 +22,7 @@ public class User {
     private UUID id;
 
     @Nonnull
+    @Column(unique = true)
     private String username;
     @JsonIgnore
     private String hashedPassword;

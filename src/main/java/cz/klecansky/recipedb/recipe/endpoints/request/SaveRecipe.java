@@ -3,12 +3,13 @@ package cz.klecansky.recipedb.recipe.endpoints.request;
 import cz.klecansky.recipedb.tag.endpoints.request.BasicTagRequest;
 import dev.hilla.Nonnull;
 import lombok.Data;
+import lombok.Value;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Value
 public class SaveRecipe {
 
     @Nonnull
