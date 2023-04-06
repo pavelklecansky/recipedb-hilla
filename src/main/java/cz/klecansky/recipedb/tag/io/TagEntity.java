@@ -3,7 +3,9 @@ package cz.klecansky.recipedb.tag.io;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
 import dev.hilla.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
 
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Table(name = "tag")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

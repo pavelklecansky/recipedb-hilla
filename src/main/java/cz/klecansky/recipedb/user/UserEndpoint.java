@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserEndpoint {
 
-
     @NonNull AuthenticatedUser authenticatedUser;
 
     public Optional<User> getAuthenticatedUser() {

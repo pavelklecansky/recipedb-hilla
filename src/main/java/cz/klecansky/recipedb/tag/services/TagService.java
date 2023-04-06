@@ -1,7 +1,6 @@
 package cz.klecansky.recipedb.tag.services;
 
 import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
-import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.tag.endpoints.response.BasicTagResponse;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.io.TagEntityRepository;

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static cz.klecansky.recipedb.TestUtils.login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +34,7 @@ class RecipeEndpointIntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        login();
+        cookies = login(mockMvc).toArray(Cookie[]::new);
     }
 
     @Test
@@ -45,18 +46,5 @@ class RecipeEndpointIntegrationTest {
     @Test
     void whenRecipeByIdNotFound_thenReturns500() throws Exception {
         mockMvc.perform(post("/connect/RecipeEndpoint/findById").cookie(cookies).contentType(MediaType.APPLICATION_JSON).content("{\"id\":\"74e7eff8-c0a8-40cf-8e33-4fd813a49899\"}")).andDo(print()).andExpect(status().is5xxServerError());
-    }
-
-    @Test
-    void whenUserLogin_thenReturns200() throws Exception {
-        System.out.println(Arrays.toString(cookies));
-        mockMvc.perform(post("/connect/UserEndpoint/getAuthenticatedUser").cookie(cookies)).andDo(print()).andExpect(status().isOk());
-    }
-
-    void login() throws Exception {
-        ResultActions perform = mockMvc.perform(multipart("/login")
-                .param("username", "admin")
-                .param("password", "admin"));
-        perform.andDo(result -> cookies = result.getResponse().getCookies());
     }
 }
