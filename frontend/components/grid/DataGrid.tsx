@@ -110,7 +110,7 @@ export default function DataGrid<T extends { id?: string }>({
                 <div className={"grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid gap-4"}>
                     {recipes.map(value => (<Card key={value.id} value={value}/>))}
                 </div>
-                <div className={"flex justify-center mb-4"}>
+                <div className={"flex justify-center mb-4 mt-4"}>
                     <Pagination
                         currentPage={currentPage}
                         totalCount={totalCount}

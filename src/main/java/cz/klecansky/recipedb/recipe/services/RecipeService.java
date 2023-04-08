@@ -75,7 +75,7 @@ public class RecipeService {
             } catch (IOException e) {
             }
         }
-        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getRecipeIngredients().stream().map(this::createIngredientResponseFromRecipeIngredient).toList(), recipe.getDirections(), recipe.getRating(), base64EncodedImageBytes, recipe.getTags());
+        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getRecipeIngredients().stream().distinct().map(this::createIngredientResponseFromRecipeIngredient).toList(), recipe.getDirections(), recipe.getRating(), base64EncodedImageBytes, recipe.getTags());
     }
 
     @Transactional

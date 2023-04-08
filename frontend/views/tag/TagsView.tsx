@@ -8,7 +8,7 @@ import {tagSortCriteria} from "Frontend/utils/core.utils";
 export default function TagsView() {
     return (
         <div className={"mx-4"}>
-            <DataGrid PageSize={10} dataLoad={TagEndpoint.findAllPagination} sortCriteria={tagSortCriteria}
+            <DataGrid PageSize={27} dataLoad={TagEndpoint.findAllPagination} sortCriteria={tagSortCriteria}
                       Dialog={AddTagDialog} Card={TagCard}/>
         </div>
     );
