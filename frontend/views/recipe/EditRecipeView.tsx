@@ -131,7 +131,6 @@ export default function EditRecipeView() {
                     onBlur={formik.handleChange}
                 />
                 <div className={"w-full flex align-middle"}>
-
                     <div className={"w-2/5"}>
                         <p>Upload recipe image</p>
                         <Upload accept="image/*"

@@ -5,11 +5,15 @@ import {Notification} from '@hilla/react-components/Notification.js';
 import {Menu, MenuItem} from "@szhsin/react-menu";
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
-import {ConfirmDialog} from "@hilla/react-components/ConfirmDialog.js";
 import RecipeWithImageResponse
     from "Frontend/generated/cz/klecansky/recipedb/recipe/endpoints/response/RecipeWithImageResponse";
 import {Rating} from "react-simple-star-rating";
 import MDEditor from "@uiw/react-md-editor";
+import DeleteConfirmDialog from "Frontend/components/dialog/DeleteConfirmDialog";
+import {TagLinkBar} from "Frontend/components/tag/TagLinkBar";
+import {CookingInfoCard} from "Frontend/components/card/CookingInfoCard";
+import {RecipeImage} from "Frontend/components/util/RecipeImage";
+import {IngredientsList} from "Frontend/components/util/IngredientsList";
 
 export default function RecipeView() {
     const empty: RecipeWithImageResponse = {
@@ -59,18 +63,8 @@ export default function RecipeView() {
 
     return (
         <div className="px-5 py-4">
-            <ConfirmDialog
-                opened={opened}
-                onOpenedChanged={({detail: {value}}) => setOpened(value)}
-                confirmTheme="error primary"
-                header='Delete Recipe'
-                cancel={true}
-                cancelText='Cancel'
-                confirmText='Delete'
-                onConfirm={() => deleteRecipe()}
-            >
-                Do you really want to delete this recipe?
-            </ConfirmDialog>
+            <DeleteConfirmDialog opened={opened} onOpenedChanged={({detail: {value}}) => setOpened(value)}
+                                 onConfirm={() => deleteRecipe()}/>
             <div className={'flex gap-m justify-end'}>
                 <Menu menuButton={<i className="las la-ellipsis-v text-3xl"></i>} transition>
                     <a href={`/recipe/${id}/edit`}><MenuItem>Edit</MenuItem></a>
@@ -92,49 +86,17 @@ export default function RecipeView() {
                             readonly={true}
                         />
                     </div>
-                    {recipe.tags.length > 0 &&
-                        <div className={"rounded-lg bg-gray-100 p-2"}>
-                            {recipe.tags.map(value => (
-                                <a key={value.id} href={`/tag/${value.id}`} className={"text-lg mr-3"}><i
-                                    className="text-black la la-tag"></i> {value.name}</a>))}
-                        </div>
-                    }
+                    <TagLinkBar recipe={recipe}/>
                     <p className="mb-8 leading-relaxed text-2xl">{recipe.description}</p>
-                    <div className="p-4 w-full">
-                        <div className="flex rounded-lg bg-gray-100 p-4 flex-col xl:flex-row flex-wrap">
-                            <div className={"w-full xl:w-1/2"}>
-                                <h3>Prep Time:</h3>
-                                <span className={"text-xl"}>{recipe.prepTimeInMinutes} minutes</span>
-                            </div>
-                            <div className={"w-full xl:w-1/2"}>
-                                <h3>Cook Time:</h3>
-                                <span className={"text-xl"}>{recipe.cookTimeInMinutes} minutes</span>
-                            </div>
-                            <div className={"w-full xl:w-1/2"}>
-                                <h3>Total Time:</h3>
-                                <span
-                                    className={"text-xl"}>{(recipe.prepTimeInMinutes ?? 0) + (recipe.cookTimeInMinutes ?? 0)} minutes</span>
-                            </div>
-                            <div className={"w-full xl:w-1/2"}>
-                                <h3>Servings:</h3>
-                                <span className={"text-xl"}>{recipe.servings}</span>
-                            </div>
-                        </div>
-                    </div>
+                    <CookingInfoCard recipe={recipe}/>
                 </div>
-                <div className="lg:max-w-md lg:w-2/3 md:w-1/2 w-5/6 mt-2">
-                    <img className="object-cover object-center rounded" alt="Recipe image"
-                         src={imgUrl}/>
-                </div>
+                <RecipeImage src={imgUrl}/>
             </div>
             <div className="container mx-auto flex md:flex-row flex-col items-left lg:items-center">
                 <div>
                     <div>
                         <h2>Ingredients</h2>
-                        <ul className={"text-xl list-disc  ml-8"}>
-                            {recipe.ingredients.map(value => (
-                                <li key={value.name}>{value?.amount} {value?.measurement} {value?.name}</li>))}
-                        </ul>
+                        <IngredientsList recipe={recipe}/>
                     </div>
                     <div>
                         <h2>Directions</h2>
