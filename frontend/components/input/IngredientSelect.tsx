@@ -45,6 +45,9 @@ export default function IngredientSelect({name, className, value, onChange, onBl
         const newOption = createOption(basicIngredient.name);
         setOptionsString((prev) => [...prev, newOption]);
         setSelectValue(newOption);
+        if (onChange) {
+            onChange(basicIngredient);
+        }
     };
 
     useEffect(() => {
