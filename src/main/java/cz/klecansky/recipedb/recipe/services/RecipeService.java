@@ -50,7 +50,7 @@ public class RecipeService {
         if (search.isEmpty()) {
             map = recipeRepository.findAll(pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
         } else {
-            map = recipeRepository.findByNameContaining(search, pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
+            map = recipeRepository.findByNameContainingIgnoreCase(search, pagingSort).map(this::convertRecipeEntityToRecipeWithImageResponse);
         }
         return new PageResponse<>(map.toList(), map.getTotalElements());
     }

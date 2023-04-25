@@ -15,6 +15,6 @@ public interface RecipeRepository extends JpaRepository<RecipeEntity, UUID> {
 
     Page<RecipeEntity> findAllByTagsIdAndNameContaining(UUID uuid, String name, Pageable pageable);
 
-    Page<RecipeEntity> findByNameContaining(String name, Pageable pageable);
+    Page<RecipeEntity> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
 }
