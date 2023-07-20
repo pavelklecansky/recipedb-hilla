@@ -18,4 +18,5 @@ Once the JAR file is built, you can run it using `java -jar target/nnpia-semestr
 
 
 ## Video
-https://github.com/pavelklecansky/NNPIA-Semestralka/raw/main/doc/video.mp4
+https://github.com/pavelklecansky/NNPIA-Semestralka/assets/28779692/bbd991f0-cf93-4a22-8236-47a7b6d0f892
+
