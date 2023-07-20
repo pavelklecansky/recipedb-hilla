@@ -18,4 +18,4 @@ Once the JAR file is built, you can run it using `java -jar target/nnpia-semestr
 
 
 ## Video
-![](doc/video.mp4)
+https://github.com/pavelklecansky/NNPIA-Semestralka/raw/main/doc/video.mp4
