@@ -1,63 +1,74 @@
-declare module '*.module.css' {
+declare module "*.module.css" {
   declare const styles: Record<string, string>;
   export default styles;
 }
-declare module '*.module.sass' {
+declare module "*.module.sass" {
   declare const styles: Record<string, string>;
   export default styles;
 }
-declare module '*.module.scss' {
+declare module "*.module.scss" {
   declare const styles: Record<string, string>;
   export default styles;
 }
-declare module '*.module.less' {
+declare module "*.module.less" {
   declare const classes: Record<string, string>;
   export default classes;
 }
-declare module '*.module.styl' {
+declare module "*.module.styl" {
   declare const classes: Record<string, string>;
   export default classes;
 }
 
 /* CSS FILES */
-declare module '*.css';
-declare module '*.sass';
-declare module '*.scss';
-declare module '*.less';
-declare module '*.styl';
+declare module "*.css";
+declare module "*.sass";
+declare module "*.scss";
+declare module "*.less";
+declare module "*.styl";
 
 /* IMAGES */
-declare module '*.svg' {
+declare module "*.svg" {
   const ref: string;
   export default ref;
 }
-declare module '*.bmp' {
+declare module "*.bmp" {
   const ref: string;
   export default ref;
 }
-declare module '*.gif' {
+declare module "*.gif" {
   const ref: string;
   export default ref;
 }
-declare module '*.jpg' {
+declare module "*.jpg" {
   const ref: string;
   export default ref;
 }
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const ref: string;
   export default ref;
 }
-declare module '*.png' {
+declare module "*.png" {
   const ref: string;
   export default ref;
 }
-declare module '*.avif' {
+declare module "*.avif" {
   const ref: string;
   export default ref;
 }
-declare module '*.webp' {
+declare module "*.webp" {
   const ref: string;
   export default ref;
+}
+declare module "*.css?inline" {
+  import type { CSSResultGroup } from "lit";
+  const content: CSSResultGroup;
+  export default content;
+}
+
+declare module "csstype" {
+  interface Properties {
+    [index: `--${string}`]: any;
+  }
 }
 declare module '*.css?inline' {
   import type { CSSResultGroup } from 'lit';

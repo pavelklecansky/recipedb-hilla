@@ -62,6 +62,8 @@
     "autoprefixer": "^10.4.13",
     "glob": "11.0.1",
     "postcss": "^8.4.21",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "rollup-plugin-brotli": "3.1.0",
     "rollup-plugin-visualizer": "5.14.0",
     "sass": "^1.59.3",
@@ -74,6 +76,9 @@
     "workbox-build": "7.3.0",
     "workbox-core": "7.3.0",
     "workbox-precaching": "7.3.0"
+  },
+  "scripts": {
+    "format": "prettier --write ."
   },
   "overrides": {
     "@vaadin-component-factory/vcf-nav": "$@vaadin-component-factory/vcf-nav",
@@ -174,7 +179,8 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "748a6888b92eaefe062400aa4d08bbebf7754068d2966a7a983da4fede167432"
+    "hash": "f2502e2b4654f233cece2edf2bd8f17ed0effb7b487f6aeb609fc966e796b0e3"
   },
-  "type": "module"
+  "type": "module",
+  "packageManager": "pnpm@8.10.0+sha1.77d568bacf41eeefd6695a7087c1282433955b5c"
 }

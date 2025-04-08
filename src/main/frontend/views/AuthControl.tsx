@@ -1,7 +1,7 @@
-import { useViewMatches } from 'Frontend/routes.js';
-import { AuthContext } from 'Frontend/utils/useAuth';
-import { ReactNode, useContext } from 'react';
-import { Navigate } from 'react-router';
+import { useViewMatches } from "Frontend/routes.js";
+import { AuthContext } from "Frontend/utils/useAuth";
+import { ReactNode, useContext } from "react";
+import { Navigate } from "react-router";
 
 export type AuthControlProps = Readonly<{
   fallback?: ReactNode;
