@@ -8,13 +8,13 @@ import cz.klecansky.recipedb.recipe.endpoints.response.BasicIngredient;
 import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.recipe.endpoints.response.RecipeWithImageResponse;
 import cz.klecansky.recipedb.recipe.services.RecipeService;
-import dev.hilla.Endpoint;
+import com.vaadin.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
 
-import javax.annotation.security.PermitAll;
+import jakarta.annotation.security.PermitAll;
 import java.util.List;
 import java.util.UUID;
 

@@ -3,7 +3,7 @@ package cz.klecansky.recipedb.recipe.io;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity(name = "RecipeIngredient")

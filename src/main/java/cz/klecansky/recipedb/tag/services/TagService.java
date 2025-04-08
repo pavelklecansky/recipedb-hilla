@@ -4,7 +4,7 @@ import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.tag.endpoints.response.BasicTagResponse;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.io.TagEntityRepository;
-import dev.hilla.exception.EndpointException;
+import com.vaadin.hilla.exception.EndpointException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

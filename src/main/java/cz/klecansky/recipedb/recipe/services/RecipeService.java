@@ -10,7 +10,7 @@ import cz.klecansky.recipedb.recipe.io.*;
 import cz.klecansky.recipedb.tag.endpoints.request.BasicTagRequest;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.io.TagEntityRepository;
-import dev.hilla.exception.EndpointException;
+import com.vaadin.hilla.exception.EndpointException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -93,23 +93,23 @@ public class RecipeService {
     private RecipeEntity createRecipeToRecipeEntity(SaveRecipe recipe) {
         RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(UUID.randomUUID());
-        recipeEntity.setName(recipe.getName());
-        recipeEntity.setDescription(recipe.getDescription());
-        recipeEntity.setDirections(recipe.getDirections());
-        recipeEntity.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
-        recipeEntity.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
-        recipeEntity.setServings(recipe.getServings());
-        recipeEntity.setImage(recipe.getImageBase64());
-        recipeEntity.setRating(recipe.getRating());
-        for (IngredientRequest ingredient : recipe.getIngredients()) {
-            List<String> stringStream = recipe.getIngredients().stream().map(IngredientRequest::getName).sorted().distinct().toList();
-            if (stringStream.size() < recipe.getIngredients().size()) {
+        recipeEntity.setName(recipe.name());
+        recipeEntity.setDescription(recipe.description());
+        recipeEntity.setDirections(recipe.directions());
+        recipeEntity.setPrepTimeInMinutes(recipe.prepTimeInMinutes());
+        recipeEntity.setCookTimeInMinutes(recipe.cookTimeInMinutes());
+        recipeEntity.setServings(recipe.servings());
+        recipeEntity.setImage(recipe.imageBase64());
+        recipeEntity.setRating(recipe.rating());
+        for (IngredientRequest ingredient : recipe.ingredients()) {
+            List<String> stringStream = recipe.ingredients().stream().map(IngredientRequest::name).sorted().distinct().toList();
+            if (stringStream.size() < recipe.ingredients().size()) {
                 throw new EndpointException("Cannot have two same ingredients.");
             }
-            Optional<IngredientEntity> byName = ingredientEntityRepository.findByName(ingredient.getName());
-            byName.ifPresent(ingredientEntity -> recipeEntity.addIngredient(ingredientEntity, ingredient.getAmount(), ingredient.getMeasurement()));
+            Optional<IngredientEntity> byName = ingredientEntityRepository.findByName(ingredient.name());
+            byName.ifPresent(ingredientEntity -> recipeEntity.addIngredient(ingredientEntity, ingredient.amount(), ingredient.measurement()));
         }
-        for (BasicTagRequest tag : recipe.getTags()) {
+        for (BasicTagRequest tag : recipe.tags()) {
             Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
             tagById.ifPresent(tagEntity -> recipeEntity.getTags().add(tagEntity));
         }
@@ -133,23 +133,23 @@ public class RecipeService {
     public Optional<RecipeWithImageResponse> update(UUID id, SaveRecipe recipe) {
         return recipeRepository.findById(id)
                 .map(oldRecipe -> {
-                    oldRecipe.setName(recipe.getName());
-                    oldRecipe.setDescription(recipe.getDescription());
-                    oldRecipe.setDirections(recipe.getDirections());
-                    oldRecipe.setServings(recipe.getServings());
-                    oldRecipe.setCookTimeInMinutes(recipe.getCookTimeInMinutes());
-                    oldRecipe.setPrepTimeInMinutes(recipe.getPrepTimeInMinutes());
-                    oldRecipe.setRating(recipe.getRating());
-                    if (recipe.getImageBase64().length != 0) {
-                        oldRecipe.setImage(recipe.getImageBase64());
+                    oldRecipe.setName(recipe.name());
+                    oldRecipe.setDescription(recipe.description());
+                    oldRecipe.setDirections(recipe.directions());
+                    oldRecipe.setServings(recipe.servings());
+                    oldRecipe.setCookTimeInMinutes(recipe.cookTimeInMinutes());
+                    oldRecipe.setPrepTimeInMinutes(recipe.prepTimeInMinutes());
+                    oldRecipe.setRating(recipe.rating());
+                    if (recipe.imageBase64().length != 0) {
+                        oldRecipe.setImage(recipe.imageBase64());
                     }
                     oldRecipe.removeAllIngredient();
-                    for (IngredientRequest ingredient : recipe.getIngredients()) {
-                        Optional<IngredientEntity> byName = ingredientEntityRepository.findByName(ingredient.getName());
-                        byName.ifPresent(ingredientEntity -> oldRecipe.addIngredient(ingredientEntity, ingredient.getAmount(), ingredient.getMeasurement()));
+                    for (IngredientRequest ingredient : recipe.ingredients()) {
+                        Optional<IngredientEntity> byName = ingredientEntityRepository.findByName(ingredient.name());
+                        byName.ifPresent(ingredientEntity -> oldRecipe.addIngredient(ingredientEntity, ingredient.amount(), ingredient.measurement()));
                     }
                     oldRecipe.getTags().clear();
-                    for (BasicTagRequest tag : recipe.getTags()) {
+                    for (BasicTagRequest tag : recipe.tags()) {
                         Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
                         tagById.ifPresent(tagEntity -> oldRecipe.getTags().add(tagEntity));
                     }

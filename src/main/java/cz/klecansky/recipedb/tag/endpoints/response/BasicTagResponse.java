@@ -1,6 +1,6 @@
 package cz.klecansky.recipedb.tag.endpoints.response;
 
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 import lombok.Value;
 
 import java.util.UUID;

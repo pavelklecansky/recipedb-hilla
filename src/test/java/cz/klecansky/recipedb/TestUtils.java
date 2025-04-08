@@ -3,7 +3,7 @@ package cz.klecansky.recipedb;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import java.util.ArrayList;
 import java.util.List;

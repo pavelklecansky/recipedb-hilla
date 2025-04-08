@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
+
 import java.util.*;
 
 @Entity
@@ -15,9 +18,9 @@ import java.util.*;
 @Setter
 public class RecipeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
+
     @Column(name = "name", nullable = false)
     private String name;
     @Column(columnDefinition = "TEXT")
@@ -37,7 +40,7 @@ public class RecipeEntity {
     Integer rating;
 
     @Lob
-    @Type(type = "org.hibernate.type.ImageType")
+    @JdbcType(VarbinaryJdbcType.class)
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 

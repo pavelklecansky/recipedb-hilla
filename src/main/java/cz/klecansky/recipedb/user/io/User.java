@@ -1,11 +1,11 @@
 package cz.klecansky.recipedb.user.io;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 

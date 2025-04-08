@@ -2,14 +2,13 @@ package cz.klecansky.recipedb.tag.io;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.NonNull;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

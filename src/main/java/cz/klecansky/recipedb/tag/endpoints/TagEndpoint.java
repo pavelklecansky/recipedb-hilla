@@ -5,13 +5,13 @@ import cz.klecansky.recipedb.recipe.endpoints.response.PageResponse;
 import cz.klecansky.recipedb.tag.endpoints.response.BasicTagResponse;
 import cz.klecansky.recipedb.tag.io.TagEntity;
 import cz.klecansky.recipedb.tag.services.TagService;
-import dev.hilla.Endpoint;
+import com.vaadin.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
 
-import javax.annotation.security.PermitAll;
+import jakarta.annotation.security.PermitAll;
 import java.util.List;
 import java.util.UUID;
 

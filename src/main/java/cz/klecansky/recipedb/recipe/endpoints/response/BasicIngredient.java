@@ -1,13 +1,9 @@
 package cz.klecansky.recipedb.recipe.endpoints.response;
 
-import cz.klecansky.recipedb.recipe.io.Measurement;
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 import lombok.Value;
 
 import java.util.UUID;
 
-@Value
-public class BasicIngredient {
-    @Nonnull private UUID id;
-    @Nonnull String name;
+public record BasicIngredient(@Nonnull UUID id, @Nonnull String name) {
 }
