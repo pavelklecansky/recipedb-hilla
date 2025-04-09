@@ -75,7 +75,7 @@ public class RecipeService {
             } catch (IOException e) {
             }
         }
-        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getRecipeIngredients().stream().distinct().map(this::createIngredientResponseFromRecipeIngredient).toList(), recipe.getDirections(), recipe.getRating(), base64EncodedImageBytes, recipe.getTags());
+        return new RecipeWithImageResponse(recipe.getId(), recipe.getName(), recipe.getDescription(), recipe.getPrepTimeInMinutes(), recipe.getCookTimeInMinutes(), recipe.getServings(), recipe.getRecipeIngredientEntities().stream().distinct().map(this::createIngredientResponseFromRecipeIngredient).toList(), recipe.getDirections(), recipe.getRating(), base64EncodedImageBytes, recipe.getTags());
     }
 
     @Transactional
@@ -110,14 +110,14 @@ public class RecipeService {
             byName.ifPresent(ingredientEntity -> recipeEntity.addIngredient(ingredientEntity, ingredient.amount(), ingredient.measurement()));
         }
         for (BasicTagRequest tag : recipe.tags()) {
-            Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
+            Optional<TagEntity> tagById = tagEntityRepository.findById(tag.id());
             tagById.ifPresent(tagEntity -> recipeEntity.getTags().add(tagEntity));
         }
         return recipeEntity;
     }
 
-    private IngredientResponse createIngredientResponseFromRecipeIngredient(RecipeIngredient recipeIngredient) {
-        return new IngredientResponse(recipeIngredient.getIngredient().getName(), recipeIngredient.getMeasurement(), recipeIngredient.getAmount());
+    private IngredientResponse createIngredientResponseFromRecipeIngredient(RecipeIngredientEntity recipeIngredientEntity) {
+        return new IngredientResponse(recipeIngredientEntity.getIngredient().getName(), recipeIngredientEntity.getMeasurement(), recipeIngredientEntity.getAmount());
     }
 
     @Transactional
@@ -150,7 +150,7 @@ public class RecipeService {
                     }
                     oldRecipe.getTags().clear();
                     for (BasicTagRequest tag : recipe.tags()) {
-                        Optional<TagEntity> tagById = tagEntityRepository.findById(tag.getId());
+                        Optional<TagEntity> tagById = tagEntityRepository.findById(tag.id());
                         tagById.ifPresent(tagEntity -> oldRecipe.getTags().add(tagEntity));
                     }
                     return recipeRepository.save(oldRecipe);
@@ -158,9 +158,7 @@ public class RecipeService {
     }
 
     public BasicIngredient createNewIngredient(String name) {
-        IngredientEntity ingredientEntity = new IngredientEntity();
-        ingredientEntity.setId(UUID.randomUUID());
-        ingredientEntity.setName(name);
+        IngredientEntity ingredientEntity = new IngredientEntity(UUID.randomUUID(), name);
         IngredientEntity save = ingredientEntityRepository.save(ingredientEntity);
         return new BasicIngredient(save.getId(), save.getName());
     }

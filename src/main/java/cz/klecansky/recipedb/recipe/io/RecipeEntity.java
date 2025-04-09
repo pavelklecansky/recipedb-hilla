@@ -1,87 +1,95 @@
 package cz.klecansky.recipedb.recipe.io;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import cz.klecansky.recipedb.tag.io.TagEntity;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.Type;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "recipe")
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RecipeEntity {
+
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @EqualsAndHashCode.Include
+    @NonNull
+    @Column(name = "id")
+    UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-    @Column(columnDefinition = "TEXT")
-    private String description;
-    private Integer prepTimeInMinutes;
-    private Integer cookTimeInMinutes;
-    private Integer servings;
-    @OneToMany(
-            mappedBy = "recipe",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-    @Column(columnDefinition = "TEXT")
-    private String directions;
-    Integer rating;
+    @Nullable
+    @Column(name = "cook_time_in_minutes")
+    Integer cookTimeInMinutes;
 
+    @Nullable
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    String description;
+
+    @Nullable
+    @Column(name = "directions", length = Integer.MAX_VALUE)
+    String directions;
+
+    @Column(name = "image")
     @Lob
     @JdbcType(VarbinaryJdbcType.class)
     @Basic(fetch = FetchType.LAZY)
-    private byte[] image;
+    byte[] image;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "recipe_tag",
-            joinColumns = {@JoinColumn(name = "recipe_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
-    )
-    @JsonManagedReference
-    private Set<TagEntity> tags = new HashSet<>();
+    @Size(max = 255)
+    @NonNull
+    @Column(name = "name")
+    private String name;
+
+    @Nullable
+    @Column(name = "prep_time_in_minutes")
+    Integer prepTimeInMinutes;
+
+    @Nullable
+    @Column(name = "rating")
+    Integer rating;
+
+    @Nullable
+    @Column(name = "servings")
+    Integer servings;
+
+    @NonNull
+    @OneToMany(mappedBy = "recipe")
+    Set<RecipeIngredientEntity> recipeIngredientEntities = new LinkedHashSet<>();
+
+    @NonNull
+    @ManyToMany
+    @JoinTable(name = "recipe_tag",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    Set<TagEntity> tags = new LinkedHashSet<>();
 
     public void addIngredient(IngredientEntity ingredient, Integer amount, Measurement measurement) {
-        RecipeIngredient recipeIngredient = new RecipeIngredient(this, ingredient, amount, measurement);
-        recipeIngredients.add(recipeIngredient);
+        RecipeIngredientEntity recipeIngredientEntity = new RecipeIngredientEntity(this, ingredient, amount, measurement);
+        recipeIngredientEntities.add(recipeIngredientEntity);
     }
 
     public void removeAllIngredient() {
-        for (Iterator<RecipeIngredient> iterator = recipeIngredients.iterator();
+        for (Iterator<RecipeIngredientEntity> iterator = recipeIngredientEntities.iterator();
              iterator.hasNext(); ) {
-            RecipeIngredient recipeIngredient = iterator.next();
+            RecipeIngredientEntity recipeIngredientEntity = iterator.next();
             iterator.remove();
-            recipeIngredient.setRecipe(null);
-            recipeIngredient.setIngredient(null);
+            recipeIngredientEntity.setRecipe(null);
+            recipeIngredientEntity.setIngredient(null);
         }
     }
 
-    public void removeIngredient(IngredientEntity ingredient) {
-        for (Iterator<RecipeIngredient> iterator = recipeIngredients.iterator();
-             iterator.hasNext(); ) {
-            RecipeIngredient recipeIngredient = iterator.next();
-
-            if (recipeIngredient.getRecipe().equals(this) &&
-                    recipeIngredient.getIngredient().equals(ingredient)) {
-                iterator.remove();
-                recipeIngredient.setRecipe(null);
-                recipeIngredient.setIngredient(null);
-            }
-        }
-    }
 }

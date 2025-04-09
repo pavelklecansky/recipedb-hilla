@@ -1,6 +1,6 @@
 package cz.klecansky.recipedb.security;
 
-import cz.klecansky.recipedb.user.io.User;
+import cz.klecansky.recipedb.user.io.UserEntity;
 import cz.klecansky.recipedb.user.io.UserRepository;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -25,17 +25,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
-        if (user == null) {
+        UserEntity userEntity = userRepository.findUserByUsername(username);
+        if (userEntity == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashedPassword(),
-                    getAuthorities(user));
+            return new org.springframework.security.core.userdetails.User(userEntity.getUsername(), userEntity.getHashedPassword(),
+                    getAuthorities(userEntity));
         }
     }
 
-    private static List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+    private static List<GrantedAuthority> getAuthorities(UserEntity userEntity) {
+        return userEntity.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
     }

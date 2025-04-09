@@ -2,7 +2,7 @@ package cz.klecansky.recipedb.user;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import cz.klecansky.recipedb.security.AuthenticatedUser;
-import cz.klecansky.recipedb.user.io.User;
+import cz.klecansky.recipedb.user.io.UserEntity;
 import com.vaadin.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -18,7 +18,7 @@ public class UserEndpoint {
 
     @NonNull AuthenticatedUser authenticatedUser;
 
-    public Optional<User> getAuthenticatedUser() {
+    public Optional<UserEntity> getAuthenticatedUser() {
         return authenticatedUser.get();
     }
 }

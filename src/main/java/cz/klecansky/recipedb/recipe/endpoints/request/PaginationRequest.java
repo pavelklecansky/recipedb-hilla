@@ -1,13 +1,13 @@
 package cz.klecansky.recipedb.recipe.endpoints.request;
 
-import com.vaadin.hilla.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
 public record PaginationRequest(Optional<String> id,
-                                @Nonnull Optional<Integer> page,
-                                @Nonnull Optional<Integer> pageSize,
-                                @Nonnull Optional<String> sort,
-                                @Nonnull Optional<String> search) {
+                                @NonNull Optional<Integer> page,
+                                @NonNull Optional<Integer> pageSize,
+                                @NonNull Optional<String> sort,
+                                @NonNull Optional<String> search) {
 
 }

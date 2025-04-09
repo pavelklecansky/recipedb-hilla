@@ -1,7 +1,7 @@
 package cz.klecansky.recipedb.security;
 
 import com.vaadin.flow.spring.security.AuthenticationContext;
-import cz.klecansky.recipedb.user.io.User;
+import cz.klecansky.recipedb.user.io.UserEntity;
 import cz.klecansky.recipedb.user.io.UserRepository;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class AuthenticatedUser {
         this.authenticationContext = authenticationContext;
     }
 
-    public Optional<User> get() {
+    public Optional<UserEntity> get() {
         return authenticationContext.getAuthenticatedUser(Jwt.class)
                 .map(userDetails -> userRepository.findUserByUsername(userDetails.getSubject()));
     }

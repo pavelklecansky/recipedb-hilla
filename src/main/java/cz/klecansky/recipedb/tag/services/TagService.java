@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -49,8 +50,7 @@ public class TagService {
             throw new EndpointException("Tag name must be unique.");
         }
 
-        TagEntity newTag = new TagEntity();
-        newTag.setName(tag);
+        TagEntity newTag = new TagEntity(UUID.randomUUID(), tag, Set.of());
         return tagRepository.save(newTag);
     }
 

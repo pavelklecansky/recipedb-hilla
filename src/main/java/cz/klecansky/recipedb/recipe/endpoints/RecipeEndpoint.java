@@ -1,6 +1,5 @@
 package cz.klecansky.recipedb.recipe.endpoints;
 
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import cz.klecansky.recipedb.core.exception.ResourceNotFoundException;
 import cz.klecansky.recipedb.recipe.endpoints.request.PaginationRequest;
 import cz.klecansky.recipedb.recipe.endpoints.request.SaveRecipe;
@@ -12,9 +11,10 @@ import com.vaadin.hilla.Endpoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.lang.NonNull;
 
 import jakarta.annotation.security.PermitAll;
+import org.jspecify.annotations.NonNull;
+
 import java.util.List;
 import java.util.UUID;
 

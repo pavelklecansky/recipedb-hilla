@@ -1,15 +1,8 @@
 package cz.klecansky.recipedb.tag.endpoints.response;
 
-import com.vaadin.hilla.Nonnull;
-import lombok.Value;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
-@Value
-public class BasicTagResponse {
-    @Nonnull
-    UUID id;
-
-    @Nonnull
-    String name;
+public record BasicTagResponse(@NonNull UUID id, @NonNull String name) {
 }

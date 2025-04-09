@@ -2,37 +2,39 @@ package cz.klecansky.recipedb.tag.io;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import cz.klecansky.recipedb.recipe.io.RecipeEntity;
-import com.vaadin.hilla.Nonnull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.*;
+import lombok.experimental.FieldDefaults;
+import org.jspecify.annotations.NonNull;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tag")
-@Getter
-@Setter
-@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TagEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    @Nonnull
-    private UUID id;
-    @Column(name = "name", nullable = false, unique = true)
-    @Nonnull
-    private String name;
+    @Column(name = "id")
+    @EqualsAndHashCode.Include
+    @NonNull
+    UUID id;
+
+    @Column(name = "name", unique = true)
+    @NonNull
+    String name;
 
     @ManyToMany(mappedBy = "tags")
     @JsonBackReference
-    @Nonnull
-    private Set<RecipeEntity> recipes = new HashSet<>();
+    @NonNull
+    Set<RecipeEntity> recipes = new HashSet<>();
 
     @PreRemove
     private void removeGroupsFromUsers() {

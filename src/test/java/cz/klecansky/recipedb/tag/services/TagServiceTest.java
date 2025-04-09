@@ -34,7 +34,7 @@ class TagServiceTest {
 
         Optional<BasicTagResponse> tagResponse = tagService.findById(UUID.fromString("27252945-771a-4ada-91ca-ed6cdb912df4"));
         if (tagResponse.isPresent()) {
-            assertEquals(tagResponse.get().getName(), "tag");
+            assertEquals(tagResponse.get().name(), "tag");
         } else {
             fail();
         }

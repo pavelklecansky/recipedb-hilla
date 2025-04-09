@@ -1,15 +1,9 @@
 package cz.klecansky.recipedb.tag.endpoints.request;
 
-import com.vaadin.hilla.Nonnull;
-import lombok.Value;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
-@Value
-public class BasicTagRequest {
-    @Nonnull
-    UUID id;
 
-    @Nonnull
-    String name;
+public record BasicTagRequest(@NonNull UUID id, @NonNull String name) {
 }

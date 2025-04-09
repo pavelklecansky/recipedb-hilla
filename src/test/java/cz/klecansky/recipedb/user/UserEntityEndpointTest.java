@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class UserEndpointTest {
+class UserEntityEndpointTest {
     @Autowired private MockMvc mockMvc;
     private Cookie[] cookies;
 
