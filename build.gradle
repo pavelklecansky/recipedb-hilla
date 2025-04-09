@@ -1,0 +1,57 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { setUrl("https://maven.vaadin.com/vaadin-prereleases") }
+		maven { setUrl("https://repo.spring.io/milestone") }
+	}
+}
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.vaadin' version "$vaadinVersion"
+}
+
+repositories {
+	mavenCentral()
+	maven { setUrl("https://maven.vaadin.com/vaadin-prereleases") }
+	maven { setUrl("https://repo.spring.io/milestone") }
+	maven {
+		setUrl("https://maven.vaadin.com/vaadin-addons")
+	}
+}
+
+dependencies {
+	implementation 'com.vaadin:vaadin'
+	implementation 'com.vaadin:vaadin-spring-boot-starter'
+	implementation 'org.parttio:line-awesome:1.1.0'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	runtimeOnly 'org.postgresql:postgresql'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'org.jspecify:jspecify:1.0.0'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'com.h2database:h2'
+	testImplementation 'com.vaadin:vaadin-testbench'
+	testImplementation('org.junit.vintage:junit-vintage-engine') {
+		exclude group: 'org.hamcrest', module: 'hamcrest-core'
+	}
+	testImplementation 'io.github.bonigarcia:webdrivermanager:5.1.1'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:$vaadinVersion"
+	}
+}
